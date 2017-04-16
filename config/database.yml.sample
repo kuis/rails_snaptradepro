@@ -1,0 +1,45 @@
+# PostgreSQL. Versions 8.2 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On Mac OS X with macports:
+#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem 'pg'
+#
+development:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: snap_trade_pro_development
+  pool:     5
+  username: bolandrm
+  password: 
+  template: template0
+  host: localhost
+
+test:
+  host: localhost
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: snap_trade_pro_test
+  pool:     5
+  username: bolandrm
+  password: 
+  template: template0
+
+production:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: snap_trade_pro_production
+  pool:     5
+  username: bolandrm
+  password: 
+  template: template0

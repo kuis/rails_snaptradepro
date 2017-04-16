@@ -1,0 +1,5 @@
+.col-sm-3
+  .image-field
+    - image = value.blank? ? "placeholder.png" : value
+    = link_to value, { target: "_blank" } do
+      = image_tag value, class: "img-rounded"

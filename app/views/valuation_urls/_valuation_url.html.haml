@@ -1,0 +1,11 @@
+%tr
+  %td.name
+    = link_to "#{truncate(valuation_url.url, length: 21)}", valuation_url.url, target: "_blank"
+  %td.state-and-price
+    %strong
+      = "#{valuation_url.year} - #{valuation_url.make} - #{valuation_url.model} - #{number_to_currency(valuation_url.retail_value, precision: 0)} - #{number_to_currency(valuation_url.wholesale_value, precision: 0)}"
+  %td.posted-time
+    = link_to valuation_url_comment_path(valuation_url.id, format: :js), remote: true do
+      Comments
+      = fa_icon "fa-comments"
+

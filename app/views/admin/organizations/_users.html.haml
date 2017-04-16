@@ -1,0 +1,36 @@
+- user_ids = f.object.users.map(&:id)
+%br
+%h3 Users
+%table#users-table.index_table.datatable
+  %thead
+    %tr
+      %th
+      %th ID
+      %th First Name
+      %th Last Name
+      %th Email
+      %th Role
+  %tbody
+    - User.all.each do |user|
+      %tr
+        %td
+          = check_box_tag 'user_ids[]', user.id, user_ids.include?(user.id)
+        %td= user.id
+        %td= user.first_name
+        %td= user.last_name
+        %td= user.email
+        %td= Membership.get_role(f.object, user).try(:profile_name)
+%i This section selects the users who are a member of the organization in any capacity.  By default they are a Rep.  To alter the user's role, visit the memberships page.
+
+:javascript
+  $('form').submit(function(){
+    checkboxes = $('table#users-table').dataTable().$('input:checked')
+    checkboxes.each(function(_, e){
+      $('form').append("<input type='hidden' name='organization[user_ids][]' value='" + $(e).val() + "'>")
+    })
+
+    checkboxes = $('table#appraisal-templates-table').dataTable().$('input:checked')
+    checkboxes.each(function(_, e){
+      $('form').append("<input type='hidden' name='organization[appraisal_template_ids][]' value='" + $(e).val() + "'>")
+    })
+  })

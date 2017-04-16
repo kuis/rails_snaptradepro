@@ -1,0 +1,18 @@
+:sass
+  footer
+    background-color: #{org_color('header_color')} !important
+    *
+      color: #{org_color('text_color')} !important
+
+%footer.clearfix
+  .col-sm-7.terms_and_condition
+    %p
+      %strong= @organization.sale_term_conditions
+  .col-sm-5
+    .row
+      .col-sm-6
+        %h3 Located in:
+        %p
+          %strong= @organization.location
+      .col-sm-6#map
+        = image_tag @organization.map_image.url, class: "img-responsive"

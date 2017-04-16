@@ -1,0 +1,5 @@
+- to_be_converted_ets = EquipmentType.all_without_et(f.object)
+- to_be_converted_ets.each do |et|
+  = check_box_tag("equipment_type[can_be_converted_to_ids][]", et.id,f.object.can_be_converted_to_ids.include?(et.id.to_s))
+  = et.name_with_label
+  %br

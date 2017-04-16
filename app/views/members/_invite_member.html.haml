@@ -1,0 +1,20 @@
+#invite-member.modal.fade{role: "dialog"}
+  = simple_form_for User.new, url: invite_user_organization_members_path(@organization), html: {remote: true, class: "form-vertical", id: "new_user_invitation"} do |f|
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
+            %span{"aria-hidden" => "true"} ×
+          %h4.modal-title Invite Member
+        .modal-body
+          .alert.alert-danger.hide
+
+          = f.input :first_name
+          = f.input :last_name
+          = f.input :email
+          = f.fields_for :memberships, Membership.new do |m|
+            = m.hidden_field :organization_id, value: current_organization.id
+            = m.input :role_id, as: :select, collection: Role.reps.pluck(:profile, :id), include_blank: false
+        .modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+          %button.btn.btn-primary{:type => "submit"} Invite Member

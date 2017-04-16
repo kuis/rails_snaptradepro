@@ -1,0 +1,7 @@
+= simple_form_for comment, remote: true,
+                  url: organization_appraisal_discussion_discussion_comments_path(organization, appraisal, discussion, format: :js) do |f|
+  = f.input :comment
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+             data: { disable_with: "Submitting ..." }

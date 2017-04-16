@@ -1,0 +1,14 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- if filtered_equipment_type
+  - breadcrumbs << [filtered_equipment_type.name_with_label, organization_appraisals_path(@organization,equipment_type_id: params[:equipment_type_id])]
+  - breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization,equipment_type_id: params[:equipment_type_id])]
+- else
+  - breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+  - breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization)]
+
+= form_tag bulk_archive_organization_appraisals_path(@organization), method: :put do |f|
+  %h2
+    #{@organization.name} - Archived #{filtered_equipment_type.present? ? filtered_equipment_type.name_with_label : "Appraisals" }
+    = hidden_field_tag :unarchive, value: true
+    %button.btn.btn-primary.pull-right Un-Archive
+  = render 'appraisals/table', appraisals: @appraisals

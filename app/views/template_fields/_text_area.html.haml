@@ -1,0 +1,5 @@
+- if field.showable?(:edit,@organization,current_user)
+  = f.input field.to_sym, as: :text, required: false, label: field.display_attribute(@organization, :label),
+            input_html: { value: appraisal.field_value(field.id),
+                          name: custom_field_name(field.id),
+                          maxlength: 300 }

@@ -1,0 +1,78 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+- if @appraisal.archived?
+  - breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization)]
+- breadcrumbs << [@appraisal.customer.account_name, nil]
+- breadcrumbs << [@appraisal.human_title, nil]
+
+= hidden_field_tag "appraisal_id", @appraisal.id, id: "appraisal-id"
+= hidden_field_tag "organization_id", @organization.id, id: "organization-id"
+
+- content_for(:ribbon_right) do
+  - if ['Used', ''].include? get_appraisal_entry_value_by_name(@appraisal, "new_used")
+    = link_to "Valuations", valuations_organization_appraisal_path(@organization, @appraisal), class: "btn btn-default btn-primary"
+
+%h1.page-title.txt-color-blueDark
+  Appraisal #{@appraisal.human_title}
+
+.center-text.actions-top
+  = render 'appraisals/show_actions'
+
+.appraisal-show
+  #pinnable.row
+    .col-xs-6.first
+    .col-xs-6.second
+
+  .row
+    .col-xs-6
+      = basic_jarvis_box "Details" do
+        .value-row
+          .col-sm-5.field-name TA-Number
+          .col-sm-7.value #{@appraisal.number}
+
+        .value-row
+          .col-sm-5.field-name Appraisal Name
+          .col-sm-7.value #{@appraisal.name}
+
+        .value-row
+          .col-sm-5.field-name Customer
+          .col-sm-7.value #{@appraisal.customer.try(:account_name)}
+
+        .value-row
+          .col-sm-5.field-name Primary Contact
+          .col-sm-7.value #{@appraisal.customer.try(:name)}
+
+        .value-row
+          .col-sm-5.field-name Status
+          .col-sm-7.value #{t("status.#{@appraisal.status}")}
+
+        .value-row
+          .col-sm-5.field-name Unit
+          .col-sm-7.value #{@appraisal.unit}
+
+    - if @id_category.present?
+      .col-xs-6
+        = render 'show_category', category: @id_category, pinned: false
+
+  - @categories_without_id.in_groups_of(2) do |category_row|
+    .row
+      - category_row.compact.each do |category|
+        .col-xs-6
+          = render 'show_category', category: category, pinned: false
+  = render "attachment"
+  .modal#image-modal
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{data: { dismiss: "modal" }} &times;
+          %h4.modal-title
+            = link_to "<<", "#", class: "previous"
+            &nbsp; &nbsp;
+            %span Title
+            &nbsp; &nbsp;
+            = link_to ">>", "#", class: "next"
+        .modal-body= image_tag "placeholder.png"
+
+.center-text.show-actions-bottom
+  = render 'appraisals/show_actions'
+  = render 'convert_et_modal'

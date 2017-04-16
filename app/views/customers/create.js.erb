@@ -1,0 +1,17 @@
+$modal = $("#customer-creation-modal");
+
+<% if @customer.persisted? %>
+  $modal.modal("hide");
+
+  $option = $("<option></option>");
+  $option.attr("value", "<%= @customer.id %>")
+  $option.text("<%= @customer.name %>");
+
+  $("#appraisal_customer_id").append($option);
+  $("#appraisal_customer_id").val("<%= @customer.id %>");
+
+  $(".create-customer").hide();
+<% else %>
+  form = "<%= j render "short_form", customer: @customer, organization: @organization %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

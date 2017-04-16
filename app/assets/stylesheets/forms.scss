@@ -1,0 +1,43 @@
+.well-form {
+  h2 { margin-top: 0; }
+  form { margin-bottom: 20px; }
+  .glyphicon { top: 0; }
+}
+
+form {
+  .disabled {
+    color: #858585;
+  }
+}
+
+input.check_boxes {
+  height: auto;
+  margin-top: 2px;
+}
+
+label.check_boxes {
+  margin-bottom: 0;
+}
+
+.actions-top {
+  margin-bottom: 40px;
+}
+
+abbr[title] {
+  cursor: default;
+  border-bottom: none;
+}
+
+.jarviswidget {
+  header h2 {
+    font-size: 114%;
+  }
+}
+
+.minicolors-theme-default .minicolors-input {
+  height: 26px;
+}
+
+textarea {
+  resize: none;
+}

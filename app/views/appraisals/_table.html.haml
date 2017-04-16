@@ -1,0 +1,83 @@
+.row
+  .col-xs-12
+    #wid-id-1.jarviswidget.no-filter{"data-widget-editbutton" => "false"}
+      %header.hidden-header
+      %div
+        .widget-body.no-padding
+          %table#datatable_fixed_column.table.table-striped.table-bordered{:width => "100%"}
+            %thead
+              %tr
+                %th
+                %th.hasinput
+                  %input.form-control{:placeholder => display_column_header("Filter TA-Number",1), :type => "text", :style => "width: 80% !important"}/
+                  %select.form-control{:class => "column_select", :name => "column1", :style => "width: 10%"}
+                    %option{value: ""} TA Number
+                    = options_for_select(options_for_selectable_fields(@organization, "column1"),params[:column1])
+                %th.hasinput
+                  %input.form-control{:placeholder => display_column_header("Filter Name",2) , :type => "text", :style => "width: 80% !important"}/
+                  %select.form-control{:class => "column_select", :name => "column2", :style => "width: 10%"}
+                    %option{value: ""} Appraisal Name
+                    = options_for_select(options_for_selectable_fields(@organization, "column2"),params[:column2])
+                %th.hasinput
+                  %input.form-control{:placeholder => display_column_header("Filter Customer",3), :type => "text", :style => "width: 80% !important"}/
+                  %select.form-control{:class => "column_select", :name => "column3", :style => "width: 10%"}
+                    %option{value: ""} Customer
+                    = options_for_select(options_for_selectable_fields(@organization, "column3"),params[:column3])
+                %th.hasinput
+                  %select.form-control
+                    %option{value: "any"} Any
+                    = options_for_select(Appraisal.status.options)
+                %th.hasinput
+                  %input.form-control{:placeholder => display_column_header("Filter Unit",5), :type => "text", :style => "width: 74% !important"}/
+                  %select.form-control{:class => "column_select", :name => "column5", :style => "width: 10%"}
+                    %option{value: ""} Unit
+                    = options_for_select(options_for_selectable_fields(@organization, "column5"),params[:column5])
+                %th.hasinput
+                  %input.form-control{:placeholder => display_column_header("Filter Date Created",6) , :type => "text", :style => "width: 75% !important"}/
+                  %select.form-control{:class => "column_select", :name => "column6", :style => "width: 10%", :id => 'xxx'}
+                    %option{value: ""} Date Created
+                    = options_for_select(options_for_selectable_fields(@organization, "column6"),params[:column6])
+                %th{:style => "display: none"}
+              %tr
+                %th
+                %th= display_column_header("TA-Number",1)
+                %th= display_column_header("Appraisal Name",2)
+                %th= display_column_header("Customer",3)
+                %th Status
+                %th= display_column_header("Unit",5)
+                %th= display_column_header("Date Created",6)
+                %th{:style => "display: none"}
+            %tbody
+              - appraisals.each do |appraisal|
+                %tr
+                  %td.hasinput
+                    %input.checkboxes{type: "checkbox", name: "appraisal_ids[]", value: "#{appraisal.id}"}
+                  %td= link_to display_column_data(1, appraisal, :number), [@organization, appraisal]
+                  %td= display_column_data(2, appraisal, :name)
+                  %td
+                    = display_column_data do
+                      - (params[:column3].present? || session[:columns]["column3"].present?) ? display_column_data(3, appraisal, :name) : link_to(appraisal.customer.account_name, [@organization, appraisal.customer])
+                  %td= t("status.#{appraisal.status}")
+                  %td= display_column_data(5, appraisal, :unit)
+                  %td= display_column_data(6, appraisal, :created_at)
+                  %td{:style => "display: none"}
+
+
+:javascript
+  var selected_columns = #{session[:columns].to_json};
+  var query_string = "";
+  document.addEventListener("DOMContentLoaded", function(event) {
+    $(".column_select").unbind("keyup search input change")
+
+    $('select').val("#{params[:status] ? params[:status] : 'any'}").change();
+    $(".column_select").change(function(){
+      selected_columns[$(this).attr('name')] = $(this).val();
+      query_string = "";
+      $.each( selected_columns, function( key, value ) {
+        value = value !=null ? value : ""
+        query_string = query_string + key + "=" + value + "&"
+      });
+      query_string = query_string + "equipment_type_id=#{params[:equipment_type_id].to_s}"
+      window.location.href = "#{request.original_url.split("?").first}?" + query_string;
+    })
+  });

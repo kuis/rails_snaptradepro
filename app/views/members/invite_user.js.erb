@@ -1,0 +1,26 @@
+<% if @email_suffix_not_allowed == true %>
+  $('#invite-member').modal('hide');
+  $("#invitation_pending").modal('show');
+<% elsif @member.errors.empty? %>
+  $('#new_user_invitation .alert').html('');
+  $('#new_user_invitation .alert').addClass('hide');
+  $('#invite-member').modal('hide');
+
+  new_row = '<tr>' +
+            '<td><%= link_to @member.name, organization_member_path(@organization, @member) %></td>' +
+            '<td><%= @member.email %></td>' +
+            '<td><%= membership_role_tag(@membership).delete("\r\n").html_safe %></td>' +
+            '<td><%= membership_active_tag(@membership) %></td>' +
+            '<td><%= link_to 'Reset Password', reset_password_organization_member_path(@organization, @member), remote: true, class: "btn btn-info reset-password" %></td>' +
+            '<td><%= membership_invitation_status(@membership) %></td>' +
+            '<td><%= @membership.invitation_accepted_at.try(:to_date) %></td>' +
+            '<td><%= link_to "Resend Invitation", resend_invitation_organization_member_path(@organization, @member), remote: true, class: "btn btn-info resend-invitation"%></td>' +
+            '</tr>';
+  $('#members-list tbody').append(new_row);
+<% else %>
+  $('#new_user_invitation .alert').html('');
+  $('#new_user_invitation .alert').removeClass('hide');
+  <% @member.errors.full_messages.each do |error| %>
+    $('#new_user_invitation .alert').append("<p><%= error %></p>");
+  <% end %>
+<% end %>

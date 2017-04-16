@@ -1,0 +1,64 @@
+// Place all the styles related to the checklists controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.check_list {
+  ul {
+    list-style-type: none;
+  }
+
+  .checklist-name {
+    margin-bottom: 10px;
+
+    .checklist-name-hover {
+      display: none;
+
+      .fa-trash {
+        padding-right: 2px;
+      }
+    }
+  }
+}
+
+#checklist-container {
+  margin-left: 220px;
+
+  h2 {
+    color: #6dc6eb;
+
+    .checklist-header {
+      margin-right: 10px;
+    }
+  }
+
+  .checklist-item {
+    margin-bottom: 5px;
+
+    input {
+      margin-right: 5px;
+    }
+  }
+}
+
+.checklist-item-add-btn {
+  margin-top: 5px;
+  text-decoration: underline
+}
+
+.completed-checklist-items {
+  color: grey;
+  font-size: 11px;
+
+  .checklist-item-hover {
+    color: #000;
+    font-size: 13px;
+    z-index: 1;
+  }
+}
+
+.checklist-item-hover {
+  display: none;
+
+  .fa-trash {
+    padding-right: 2px;
+  }
+}

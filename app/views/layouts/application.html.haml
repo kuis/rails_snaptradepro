@@ -1,0 +1,49 @@
+!!!
+%html{:lang => "en-us"}
+  %head
+    %meta{:charset => "utf-8"}/
+    %title Snap Trade Pro
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "author"}/
+    %meta{:content => "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no", :name => "viewport"}/
+    = favicon_link_tag "stp-favicon-2.ico"
+    - unless Rails.env.test?
+      %link{:href => "https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700", :rel => "stylesheet"}/
+      %link{:href => "//d2dubfq97s02eu.cloudfront.net/appcues.min.css", :rel => "stylesheet", :type => "text/css"}/
+    = stylesheet_link_tag 'application', media: 'all'
+    = csrf_meta_tags
+    = javascript_include_tag 'application'
+    = filepicker_js_include_tag
+
+  %body.smart-style-2.fixed-header.fixed-ribbon.fixed-navigation(id="#{action_name}")
+    - if user_signed_in?
+      %script{"data-appcues-id" => "1510", "data-user-email" => current_user.email, "data-user-id" => current_user.id, :onload => "Appcues.init()", :src => "//d2dubfq97s02eu.cloudfront.net/appcues.min.js", :type => "text/javascript"}
+    %header#header{ class: ("development" if ENV["FLAG_HEADER_COLOR"]) }
+      = render "layouts/header"
+
+    - if show_left_nav?
+      %aside#left-panel
+        = render "layouts/left_nav"
+
+    #main{role: "main", class: ("no-left-nav" unless show_left_nav?)}
+
+      - if breadcrumbs.any?
+        #ribbon(class="#{'full-width-ribbon' unless show_left_nav?}")
+          %span.ribbon-button-alignment
+          %ol.breadcrumb
+            - breadcrumbs.each do |text, link|
+              - if link
+                %li= link_to text, link
+              - else
+                %li= text
+          .right
+            = content_for(:ribbon_right)
+
+      #content
+        .container-fluid
+          = flash_messages if show_layout_flash?
+          = yield
+
+    .page-footer{class: ("no-left-nav" unless show_left_nav?)}
+      = render "layouts/footer"
+

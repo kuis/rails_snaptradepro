@@ -1,0 +1,12 @@
+$discussion_modal = $("<%= j render "discussion_comments/add_discussion_comment_modal" %>")
+$("body").append($discussion_modal)
+
+$modal = $("<%= j render 'discussion_comments/add_discussion_comment_modal' %>");
+
+if ($("#discussion-comment-creation-modal").length > 0) {
+    $("#discussion-comment-creation-modal").remove()
+}
+
+$("body").append($modal);
+
+$('#discussion-comment-creation-modal').modal();

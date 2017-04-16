@@ -1,0 +1,55 @@
+- template_field_id = f.object.template_field_id
+= f.input :template_field_id, as: :hidden
+%br
+%h3 Template Field
+%table.index_table.datatable.template_field
+  %thead
+    %tr
+      %th
+      %th ID
+      %th Name
+      %th Label
+      %th{style: "display:none"} Choices
+  %tbody
+    - TemplateField.has_access_control.each do |template_field|
+      %tr
+        %td
+          = check_box_tag 'template_field_ids[]', template_field.id, template_field_id == template_field.id, disabled: !@field_access_control.new_record?
+        %td= template_field.id
+        %td= template_field.name
+        %td{:class => 'label'}
+          = template_field.label
+        %td{style: "display:none", class: 'choices' }= template_field.choices_array.join(",")
+
+- if @field_access_control.new_record?
+  :javascript
+    $('form').submit(function(e){
+      checkboxes = $('table.datatable.template_field').dataTable().$('input:checked')
+      template_ids = []
+      checkboxes.each(function(_, e){
+        template_ids.push($(e).val());
+      })
+      if(template_ids.length==0){
+        alert('You must select one templat field');
+        e.preventDefault();
+        return false;
+      }
+      $('#field_access_control_template_field_id').val(template_ids[0])
+    })
+
+    $('input:checkbox','table.datatable.template_field').click(function(e){
+      if($(this).is(':checked')){
+        $('input:checkbox','table.datatable.template_field').prop('checked',false);
+          $(this).prop('checked',true);
+        }
+    })
+
+
+- if @field_access_control.new_record? || @field_access_control.choices_array.empty?
+  :javascript
+    $("table.template_field input[type='checkbox']").click(function(){
+      var template_field_choices = $(this).closest('tr').find('td.choices').html()
+      template_field_choices = template_field_choices.replace(/,/g, '\n');
+      $("#field_access_control_choices").val(template_field_choices)
+      $("#field_access_control_label,#field_access_control_print_label").val($(this).closest('tr').find('td.label').text().trim())
+    })

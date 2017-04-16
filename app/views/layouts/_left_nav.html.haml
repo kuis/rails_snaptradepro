@@ -1,0 +1,91 @@
+.login-info
+  %span.dropdown
+    %a.dropdown-toggle{href: "#", data: { toggle: "dropdown" }}
+      /%img.online{:alt => "me", :src => "images/theme/img/avatars/sunny.png"}/
+      %span
+        = current_user.name
+      %i.fa.fa-angle-down
+    %ul.dropdown-menu
+      - if current_user.try(:admin?)
+        %li= link_to "Admin Panel", admin_root_path
+        %li= link_to "Print Layouts", print_templates_path
+      - if current_organization.admin?(current_user) || current_organization.owner?(current_user)
+        %li= link_to 'Org Setting', organization_path(current_organization)
+      %li= link_to "Sign out", destroy_user_session_path
+
+%nav
+  %ul
+    %li
+      = link_to root_path, title: "All Units" do
+        %i.fa.fa-lg.fa-fw.fa-home
+        %span.menu-item-parent All Units
+
+    %li#appraisal-link
+      = link_to "#", class: "hide-collapse", style: "display: none" do
+        %i.fa.fa-lg.fa-fw
+        %span.menu-item-parent
+      %ul{style: "display: block;"}
+        -if @organization.is_equipment_type_enabled?
+          - @organization.equipment_types.all.each do |et|
+            %li
+              = link_to organization_appraisals_path(@organization, equipment_type_id: et.id) do
+                %i.fa.fa-lg.fa-fw.fa-camera
+                = et.name_with_label
+            %li
+              = link_to archived_organization_appraisals_path(@organization, equipment_type_id: et.id) do
+                %i.fa.fa-lg.fa-fw.fa-archive
+                ="Archived #{et.name}"
+        -else
+          %li
+            = link_to organization_appraisals_path(@organization) do
+              %i.fa.fa-lg.fa-fw.fa-archive
+              All Appraisals
+        %li
+          %a{:href => "#"}
+            %i.fa.fa-lg.fa-fw.fa-user
+            By Member
+          %ul
+            - @organization.users.order(:first_name, :last_name).each do |member|
+              %li= link_to member.name, organization_appraisals_path(@organization, member_id: member.id)
+        %li
+          = link_to archived_organization_appraisals_path(@organization) do
+            %i.fa.fa-lg.fa-fw.fa-archive
+            Archived
+
+    %li#customer-link
+      = link_to organization_customers_path(@organization), class: "hide-collapse" do
+        %i.fa.fa-lg.fa-fw.fa-user
+        %span.menu-item-parent Customers
+      %ul{style: "display: block;"}
+        %li
+          = link_to archived_organization_customers_path(@organization) do
+            %i.fa.fa-lg.fa-fw.fa-archive
+            Archived
+
+    -#%li
+      %a.disabled
+        %i.fa.fa-lg.fa-fw.fa-truck
+        %span.menu-item-parent Inventory
+
+    %li
+      %a.disabled
+        %i.fa.fa-lg.fa-fw.fa-mobile-phone
+        %span.menu-item-parent Agents
+
+    %li
+      %a.disabled{:href => "#"}
+        %i.fa.fa-lg.fa-fw.fa-bar-chart
+        %span.menu-item-parent Reports
+      %ul{style: "display: none;"}
+        %li
+          = link_to inventory_commitments_reports_path, class: 'disabled' do
+            Inventory Commitments
+
+    - if is_manager_or_member?
+      %li
+        = link_to organization_members_path(@organization) do
+          %i.fa.fa-lg.fa-fw.fa-users
+          %span.menu-item-parent Members
+
+%span.minifyme{"data-action" => "minifyMenu"}
+  %i.fa.fa-arrow-circle-left.hit

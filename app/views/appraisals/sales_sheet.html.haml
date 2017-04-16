@@ -1,0 +1,149 @@
+
+:sass
+  body.print
+    color: #{org_color('body_text_color')}
+    .border-bottom
+      border-color: #{org_color('highlight_line_color')} !important
+    .panel-orange
+      .panel-heading
+        background-color: #{org_color('sub_header_color')}
+        color: #{org_color('comment_text_color')}
+      .panel-body
+        background-color: #{org_color('sub_background_color')}
+        color: #{org_color('comment_text_color')}
+    footer
+      background-color: #{org_color('header_color')}
+      *
+        color: #{org_color('text_color')} !important
+    .price-value
+      color: #{org_color('text_color')} !important
+    .price-bg
+      border-color: #{org_color('highlight_line_color')} !important
+
+    header #company-info
+      background-color: #{org_color('header_color')} !important
+      *
+        color: #{org_color('text_color')} !important
+%header.preview.clearfix.border-bottom
+  .col-sm-5#company-logo
+    -# %span.wrapper
+    = image_tag @organization.company_logo.url, class: "img-responsive"
+  .col-sm-7#company-info
+    .pull-left
+      %h2.bold= @organization.trade_name
+      %h2= @organization.full_address
+      %h2
+        %strong #{@organization.call_to_action}: #{@organization.sale_sheet_phone}
+%main
+  #hero-shot.border-bottom
+    = image_tag get_appraisal_entry_value_by_name(@appraisal, "hero_shot"), class: "img-responsive"
+    .price-bg
+    .price-value
+      - price_fields = @template.print_template_blocks.numeric.by_page(0)
+      = number_to_currency get_appraisal_entry_value(@appraisal, price_fields.first.blockable_id) if price_fields.first.present?
+
+  #contact.clearfix.border-bottom
+    .col-sm-6
+      %h1
+        #{get_appraisal_entry_value_by_name(@appraisal, "year")} #{get_appraisal_entry_value_by_name(@appraisal, "make")} #{get_appraisal_entry_value_by_name(@appraisal, "model")}
+
+      .row
+        .col-sm-4
+          %h2 Odometer:
+          %h2 Unit No:
+          %h2 Serial No:
+          %h2 Stock No:
+        .pull-left
+          %h2
+            %strong
+              #{get_appraisal_entry_value_by_name(@appraisal, "mileage")} #{get_appraisal_entry_value_by_name(@appraisal, "mileage_unit")}
+          %h2
+            %strong= @appraisal.unit
+          %h2
+            %strong= get_appraisal_entry_value_by_name(@appraisal, "serial_no")
+          %h2
+            %strong= get_appraisal_entry_value_by_name(@appraisal, "stock_number")
+
+    .col-sm-6
+      .col-sm-5
+        = image_tag @membership.avatar.url, class: "img-responsive"
+      #bio.col-sm-7
+        %h2= current_user.name
+        .value
+          %h3= @membership.job_title
+          %h3= @membership.email
+          %h3= @membership.contact_phone
+  .detail.clearfix
+    %section.row
+      .col-sm-8
+        - @template.print_template_blocks.photos.by_page(1).each_with_index do |block, i|
+          = image_tag get_appraisal_entry_value(@appraisal, block.blockable_id)
+
+      .col-sm-4
+        - @template.print_template_blocks.tables.by_page(1).each_with_index do |block, i|
+          - appraisal_category = AppraisalCategory.find(block.blockable_id)
+          - hidden_fields = block.properties["hidden_fields"]
+          - hidden_fields = hidden_fields ? hidden_fields.split(",") : []
+          %h2= appraisal_category.label
+          - if appraisal_category.present?
+            %table.table.table-striped.table-condensed
+              - appraisal_category.template_fields.non_photos.non_text_areas.weighted.each do |field|
+                - next if hidden_fields.include?(field.id.to_s)
+                %tr
+                  %th= field.web_label
+                  %td.value= @appraisal.field_readable_value(field)
+          %br
+
+    %section.row
+      .col-sm-8
+        - @template.print_template_blocks.photos.by_page(2).each_with_index do |block, i|
+          = image_tag get_appraisal_entry_value(@appraisal, block.blockable_id)
+
+      .col-sm-4
+        - @template.print_template_blocks.tables.by_page(2).each_with_index do |block, i|
+          - appraisal_category = AppraisalCategory.find(block.blockable_id)
+          - hidden_fields = block.properties["hidden_fields"]
+          - hidden_fields = hidden_fields ? hidden_fields.split(",") : []
+          %h2= appraisal_category.label
+          - if appraisal_category.present?
+            %table.table.table-striped.table-condensed
+              - appraisal_category.template_fields.non_photos.non_text_areas.weighted.each do |field|
+                - next if hidden_fields.include?(field.id.to_s)
+                %tr
+                  %th= field.web_label
+                  %td.value= @appraisal.field_readable_value(field)
+          %br
+
+    %section
+      .col-sm-12
+        - if @organization.commentary.present?
+          .panel.panel-orange
+            .panel-heading Commentary
+            .panel-body
+              = @organization.commentary
+        - if @organization.warranty.present?
+          .panel.panel-orange
+            .panel-heading Warranty Information
+            .panel-body
+              = @organization.warranty
+
+%footer.clearfix
+  .col-sm-7.terms_and_condition
+    %p
+      %strong= @organization.sale_term_conditions
+  .col-sm-5
+    .row
+      .col-sm-6
+        %h3 Located in:
+        %p
+          %strong= @organization.location
+      .col-sm-6#map
+        = image_tag @organization.map_image.url, class: "img-responsive"
+
+- content_for :javascript do
+  :javascript
+    pdf_link = "#{pdf_preview_link(@organization, @appraisal)}";
+
+    $('#print_template').on('click', function(e) {
+      window.location.replace(pdf_link);
+    });

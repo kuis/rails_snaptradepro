@@ -1,0 +1,10 @@
+= basic_jarvis_box category.label do
+  - category.template_fields.photos.weighted.in_groups_of(3) do |field_row|
+    .image-row.row
+      - field_row.compact.each do |field|
+        .col-sm-4.image-box{class: ('has-error' if appraisal.errors[field.to_sym].any?)}
+          = render "template_fields/#{field.type_lookup}",
+                   f: f, field: field, appraisal: appraisal
+  - category.template_fields.non_photos.editable.weighted.each do |field|
+    = render "template_fields/#{field.type_lookup}",
+             f: f, field: field, appraisal: appraisal

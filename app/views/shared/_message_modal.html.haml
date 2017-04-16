@@ -1,0 +1,8 @@
+#confirm-message.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-body
+        %p= body
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"}= no_label
+        %button.btn.btn-primary{:type => "button"}= yes_label

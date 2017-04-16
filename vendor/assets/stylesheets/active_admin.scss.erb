@@ -1,0 +1,102 @@
+// SASS variable overrides must be declared before loading up Active Admin's styles.
+//
+// To view the variables that Active Admin provides, take a look at
+// `app/assets/stylesheets/active_admin/mixins/_variables.css.scss` in the
+// Active Admin source.
+//
+// For example, to change the sidebar width:
+// $sidebar-width: 242px;
+
+// Active Admin's got SASS!
+@import "active_admin/mixins";
+@import "active_admin/base";
+@import "jquery.minicolors";
+@import "dataTables/jquery.dataTables";
+
+// Overriding any non-variable SASS must be done after the fact.
+// For example, to change the default status-tag color:
+//
+//   .status_tag { background: #6090DB; }
+
+<% if ENV["FLAG_HEADER_COLOR"] %>
+  .header {
+    background: -webkit-linear-gradient(90deg, #820000, #8F0000) !important;
+  }
+<% end %>
+
+.img-sm {
+  max-width: 200px;
+}
+li.input fieldset {
+  box-shadow: none;
+  webkit-box-shadow: none;
+}
+.dataTables_filter {
+  input[type='search'] {
+    height: 30px;
+    margin-left: 0px;
+    margin-bottom: 5px;
+    outline: none;
+  }
+}
+table.dataTable thead th, 
+table.dataTable thead td,
+table.dataTable.no-footer
+{
+  border-bottom: 1px solid #ccc;
+}
+
+.dataTables_wrapper .dataTables_filter {
+  float: left;
+  text-align: left;
+}
+.dataTables_wrapper .dataTables_length {
+  float: right;
+  select {
+    height: 30px;
+  }
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  .paginate_button{
+    padding: 5px;
+    background: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn {
+  background: -webkit-linear-gradient(-90deg, white, #e7e7e7);
+  padding: 7px 16px 6px;
+  border-radius: 200px;
+  background: -webkit-linear-gradient(-90deg, white, #e7e7e7);
+  background: linear, -90deg, white, #e7e7e7;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE7E7E7');
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE7E7E7');
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+  border: solid 1px #c7c7c7;
+  border-color: #c7c7c7;
+  border-top-color: lightgrey;
+  border-right-color: #c7c7c7;
+  border-bottom-color: #c2c2c2;
+  border-left-color: #c7c7c7;
+  text-shadow: white 0 1px 0;
+  color: #5e6469 !important;
+  text-decoration: none !important;
+  margin: 0px;
+}
+
+.btn-danger {
+  background: #d9534f;
+  border: none;
+  color: white !important;
+}
+
+.pull-right {
+  float: right;
+}
+.well {
+  padding: 10px;
+}

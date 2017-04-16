@@ -1,0 +1,32 @@
+- breadcrumbs << ["Printing Layout", print_templates_path]
+
+.dropdown.pull-right.mgn-r-5.form-group
+  %button.btn.btn-primary.dropdown-toggle{data: { toggle: "dropdown" } }
+    Create New Layout
+    %span.caret
+  %ul.dropdown-menu
+    - PrintTemplate.layout_type.options.each do |type|
+      %li
+        = link_to type[0], new_print_template_path(layout_type: type[1])
+
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th
+      %th Name
+      %th Appraisal Template
+      %th Layout Type
+      %th Description
+      %th Created Date
+      %th
+
+  %tbody
+    - @print_templates.each do |template|
+      %tr
+        %td
+        %td= link_to template.name, edit_print_template_path(template)
+        %td= template.appraisal_template.try(:label)
+        %td= template.layout_type_text
+        %td= template.description
+        %td= template.created_at
+        %td

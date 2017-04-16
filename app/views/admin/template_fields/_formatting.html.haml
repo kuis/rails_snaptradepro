@@ -1,0 +1,40 @@
+= fields_for :formatting do |field|
+  .form-group.numeric-formatting
+    = field.label :currency_symbol
+    = field.select :currency_symbol, options_for_select(%w($ € £), formatting_value(f.object, 'currency-symbol')), prompt: ''
+
+  .form-group.numeric-formatting
+    = field.label :digits_after_decimal
+    = field.select :digits_after_decimal, options_for_select(%w(0 1 2 3 4), formatting_value(f.object, 'digits-after-decimal')), prompt: ''
+
+  .form-group.numeric-formatting
+    = field.label :comma_separated
+    = field.select :comma_separated, options_for_select([['Yes', true],['No', false]], formatting_value(f.object, 'comma-separated')), prompt: ''
+
+  .form-group.text-formatting
+    = field.label :capitalization
+    = field.select :capitalization, options_for_select(%w(first-letter first-letter-all-words all-words), formatting_value(f.object, 'capitalization')), prompt: ''
+
+:javascript
+  $("#template_field_field_type").on("change", function(){
+    toggleFields();
+  })
+
+  function toggleFields() {
+    $this = $("#template_field_field_type");
+    if ($this.val() == 'Text Area' || $this.val() == 'Text Field') {
+      $('.text-formatting').removeClass('hide')
+    }
+    else {
+      $('.text-formatting').addClass('hide')
+    }
+
+    if ($this.val() == 'Numeric') {
+      $('.numeric-formatting').removeClass('hide')
+    }
+    else {
+      $('.numeric-formatting').addClass('hide')
+    }
+  }
+
+  toggleFields();

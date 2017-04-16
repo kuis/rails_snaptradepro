@@ -1,0 +1,13 @@
+#valuation-comments-container
+  %h2
+    %span Valuation Opinions
+    = link_to "Add Opinion", "#comment-creation-modal", data: { toggle: "modal" }, class: "btn btn-default", id:'add-comment'
+    - if current_user.roles.include?(Role.rep_sales_manager_role)
+      = link_to "Reveal Opinions", reveal_comments_organization_appraisal_path(@organization.id, @appraisal.id), class: "btn btn-default reveal-comments #{'hidden' if !@appraisal_comments.first.try(:hidden?)}", remote: true
+      = link_to "Hide Opinions", hide_comments_organization_appraisal_path(@organization.id, @appraisal.id), class: "btn btn-default hide-comments #{'hidden' if @appraisal_comments.first.try(:hidden?)}", remote: true
+
+  .table-responsive
+    %table.table#valuation-comments
+      - @appraisal_comments.each do |comment|
+        = render "comment", comment: comment
+

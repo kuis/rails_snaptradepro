@@ -1,0 +1,9 @@
+$modal = $("<%= j render 'check_list_edit_modal', check_list: @check_list %>");
+
+if ($("#check-list-creation-modal").length > 0) {
+    $("#check-list-creation-modal").remove()
+}
+
+$("body").append($modal);
+
+$('#check-list-edit-modal').modal();

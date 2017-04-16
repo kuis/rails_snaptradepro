@@ -1,0 +1,14 @@
+= simple_form_for [organization, customer], remote: true,
+                  url: organization_customers_path(organization, customer, format: :js) do |f|
+  %p
+    Note: You can add additional customer details from the customers page
+    at a later time.
+
+  = f.input :account_name
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :business_phone
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+               data: { disable_with: "Submitting ..." }

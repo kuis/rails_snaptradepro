@@ -1,0 +1,70 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Customers", organization_customers_path(@organization)]
+- breadcrumbs << [@customer.account_name, organization_customer_path(@organization, @customer)]
+
+%h1.page-title.txt-color-blueDark
+  Customer - #{@customer.account_name}
+.center-text.actions-top
+  = render 'customers/show_actions'
+
+.row
+  .col-md-6
+    %h3 Details
+
+    %p
+      %b Account Name
+      %br
+      = @customer.account_name
+    %p
+      %b First Name
+      %br
+      = @customer.first_name
+    %p
+      %b Last Name
+      %br
+      = @customer.last_name
+
+    %h3 Contact
+
+    %p
+      %b Email
+      %br
+      = @customer.email
+    %p
+      %b Business Phone
+      %br
+      = @customer.business_phone
+    %p
+      %b Direct Phone
+      %br
+      = @customer.direct_phone
+    %p
+      %b Mobile Phone
+      %br
+      = @customer.mobile_phone
+
+  .col-md-6
+    %h3 Address
+
+    %p
+      %b Street Address
+      %br
+      = @customer.street_address
+
+    %p
+      %b City
+      %br
+      = @customer.city
+
+    %p
+      %b State or Province
+      %br
+      = @customer.state_or_provence
+
+    %p
+      %b Zip/Postal
+      %br
+      = @customer.postal_code
+
+.center-text.actions-bottom
+  = render 'customers/show_actions'

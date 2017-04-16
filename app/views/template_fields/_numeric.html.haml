@@ -1,0 +1,7 @@
+- if field.showable?(:edit,@organization,current_user)
+  = f.input field.to_sym, required: false, label: field.display_attribute(@organization, :label),
+                          input_html: { value: appraisal.field_value(field.id),
+                                        class: "numeric-field",
+                                        name: custom_field_name(field.id),
+                                        data: field.parsed_formatting },
+            required: field.required?

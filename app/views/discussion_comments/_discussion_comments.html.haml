@@ -1,0 +1,8 @@
+.row#discussion-comments-container
+  %h2
+    %span= @discussion.name
+    = link_to "Add to this Discussion", new_organization_appraisal_discussion_discussion_comment_path(@appraisal.organization.id, @appraisal.id, discussion_id: @discussion.id, id: @discussion.id), remote: true, class: "btn btn-default add-discussion-comment-btn"
+    = link_to "Back to Valuation Discussions", organization_appraisal_discussion_path(@appraisal.organization.id, @appraisal.id, id: @appraisal.id, format: :js), remote: true, class: "btn btn-default back-to-discussions-btn"
+  - discussion_comments.each do |comment|
+    %table#discussion-comments
+      = render "discussion_comment", comment: comment

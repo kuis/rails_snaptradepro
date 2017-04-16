@@ -1,0 +1,9 @@
+- if field.showable?(:edit,@organization,current_user)
+  - selected_value = appraisal.field_value(field.id)
+  - options = (field.options(@organization) + [selected_value]).reject { |c| c.to_s.empty? }.uniq
+
+  = f.input field.to_sym, required: false, label: field.display_attribute(@organization),
+            as: :select, include_blank: true,
+            collection: options,
+            selected: selected_value.present? ? selected_value : nil,
+            input_html: { name: custom_field_name(field.id) }

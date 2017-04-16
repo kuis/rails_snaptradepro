@@ -1,0 +1,44 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+
+%h1.page-title.txt-color-blueDark
+  Organization - #{@organization.name}
+
+= simple_form_for [@organization], defaults: {wrapper_html: { class: 'col-sm-6' }} do |f|
+  .actions-top
+    = f.submit nil, class: "btn btn-primary"
+  %h3 Org Public Information
+  .row
+    = f.input :trade_name
+    = f.input :street_address
+    = f.input :city
+    = f.input :state
+    = f.input :zipcode
+    = f.input :call_to_action
+    = f.input :sale_sheet_phone
+    = f.input :toll_free
+    = f.input :main
+    = f.input :sales
+    = f.input :service
+    = f.input :parts
+    = f.input :commentary, as: :text, input_html: { rows: 7 }
+    = f.input :warranty, as: :text, input_html: { rows: 7 }
+    = f.input :location
+    .clearfix
+    = f.input :sale_term_conditions, as: :text, input_html: { rows: 7 }
+    = f.input :term_guidelines, as: :text, input_html: { rows: 7 }
+    = f.input :company_logo, as: :file, hint: f.object.company_logo.present? ? f.template.image_tag(f.object.company_logo.url, class: "img-sm img-thumbnail") : f.template.content_tag(:span, "No company logo yet")
+    = f.input :map_image, as: :file, hint: f.object.map_image.present? ? f.template.image_tag(f.object.map_image.url, class: "img-sm img-thumbnail") : f.template.content_tag(:span, "No map image yet")
+
+  %h3 Setting
+  = f.fields_for :setting, f.object.setting, defaults: {wrapper_html: { class: 'col-sm-3' }}  do |s|
+    .row
+      = s.input :header_color, input_html: { class: "colorpicker" }
+      = s.input :sub_header_color, input_html: { class: "colorpicker" }
+      = s.input :sub_background_color, input_html: { class: "colorpicker" }
+      = s.input :text_color, input_html: { class: "colorpicker" }
+      = s.input :body_text_color, input_html: { class: "colorpicker" }
+      = s.input :highlight_line_color, input_html: { class: "colorpicker" }
+      = s.input :comment_text_color, input_html: { class: "colorpicker" }
+
+  .actions-bottom
+    = f.submit nil, class: "btn btn-primary"

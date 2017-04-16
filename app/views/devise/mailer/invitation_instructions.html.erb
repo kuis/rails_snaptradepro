@@ -1,0 +1,13 @@
+<p><%= I18n.t("devise.mailer.invitation_instructions.hello", email: @resource.email, first_name: @resource.first_name || @resource.email) %></p>
+
+<p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url).html_safe %></p>
+
+<p><%= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
+
+<% signin_link = 'https://app.snaptradepro.com/users/sign_in' %>
+<% site_link = 'snaptradepro.com' %>
+<% if Rails.env.development? %>
+  <% signin_link = 'https://snaptradeprostaging.herokuapp.com/users/sign_in' %>
+  <% site_link = 'snaptradeprostaging.herokuapp.com' %>
+<% end %>
+<p><%= I18n.t("devise.mailer.invitation_instructions.ignore", :signin_link => signin_link, :site_link => site_link).html_safe %></p>

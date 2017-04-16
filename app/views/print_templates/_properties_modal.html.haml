@@ -1,0 +1,26 @@
+#category_property_modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+        %h4.modal-title Appraisal Category Properties
+      .modal-body
+        = hidden_field_tag :category_id
+        %table.table.table-hover
+          %thead
+            %tr
+              %th
+              %th Name
+              %th Label
+          %tbody
+            %tr.template.hide
+              %td
+                %input{type: :checkbox}
+              %td#name
+              %td#label
+
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-primary{:type => "button"} Save changes
+

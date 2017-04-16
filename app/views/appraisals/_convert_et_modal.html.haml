@@ -1,0 +1,26 @@
+.modal#et-conversion-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: "modal" }} &times;
+        %h4.modal-title Please Select Template
+      .modal-body
+        = simple_form_for "",
+                          url: convert_et_organization_appraisal_path(@organization, @appraisal), html:{method: "put"} do |f|
+          %div#template_selection_panel.form-group
+          .center-text
+            = f.submit "Convert", class: "btn btn-primary",
+                     data: { disable_with: "Submitting ..." }
+
+
+:javascript
+  $(".et-conversion").on("click",function(){
+    var et_id = $(this).attr("et_id")
+    $.ajax({
+      url: "#{find_et_templates_organization_appraisal_path(@organization, @appraisal)}?et_id="+et_id,
+      type: "GET",
+      success : function(response){
+          $("#template_selection_panel").html(response)
+      }
+    })
+  })

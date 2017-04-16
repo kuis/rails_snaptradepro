@@ -1,0 +1,44 @@
+- appraisal_templates = f.object.appraisal_templates.map(&:id)
+%br
+%h3 Appraisal Templates
+%table#appraisal-templates-table.index_table.datatable
+  %thead
+    %tr
+      %th
+      %th Visible?
+      %th ID
+      %th Name
+      %th Label
+      %th Agent
+  %tbody
+    - AppraisalTemplate.all.each do |appraisal_template|
+      %tr
+        %td
+          = check_box_tag 'appraisal_template_ids[]', appraisal_template.id, appraisal_templates.include?(appraisal_template.id)
+        %td
+          - ato = f.object.appraisal_templates_organizations.find_by(appraisal_template_id: appraisal_template.id)
+          = check_box_tag '', '', ato.try(:is_visible),{class: "ato", ato_id: ato.try(:id)} if ato
+        %td= appraisal_template.id
+        %td= appraisal_template.name
+        %td= appraisal_template.label
+        %td= appraisal_template.agent? ? "Yes" : "No"
+
+:javascript
+  $("#appraisal-templates-table").delegate(".ato","click",function(){
+  var clicked_checkbox = $(this)
+  var ato_id = $(this).attr("ato_id")
+   $.ajax({
+      url: '#{update_ato_visibility_url}?id='+$(this).attr("ato_id")+'&is_visible='+$(this).prop('checked'),
+      type: 'put',
+      success: function(response){
+        if (response!="true") {
+          clicked_checkbox.prop('checked',false)
+          if (ato_id == undefined) {
+           alert("This template is not yet available to this organization!! Please make available by saving first")
+          }
+
+        }
+      }
+   })
+  })
+

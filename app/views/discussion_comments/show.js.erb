@@ -1,0 +1,2 @@
+$discussion_comments = $("<%= j render "discussion_comments/discussion_comments", discussion_comments: @comments %>")
+$("#discussions-container").replaceWith($discussion_comments)

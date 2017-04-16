@@ -1,0 +1,9 @@
+.modal#customer-creation-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: "modal" }} &times;
+        %h4.modal-title Create a Customer
+      .modal-body
+        = render "customers/short_form", organization: organization,
+                                         customer: organization.customers.build

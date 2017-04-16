@@ -1,0 +1,6 @@
+- if field.showable?(:edit,@organization,current_user)
+  = f.input field.to_sym, required: false, label: field.display_attribute(@organization, :label),
+            as: :check_boxes,
+            collection: field.choices.split("\r\n"),
+            checked: appraisal.field_value(field.id),
+            input_html: { name: "#{custom_field_name(field.id)}[]" }

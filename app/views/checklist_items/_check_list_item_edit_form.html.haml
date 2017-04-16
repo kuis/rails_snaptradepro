@@ -1,0 +1,7 @@
+= simple_form_for check_list_item, remote: true,
+                  url: checklist_checklist_item_path(checklist_id: check_list_item.checklist.id, format: :js) do |f|
+  = f.input :description, label: "Description"
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+             data: { disable_with: "Submitting ..." }

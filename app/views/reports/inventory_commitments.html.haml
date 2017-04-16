@@ -1,0 +1,103 @@
+- breadcrumbs << ["Report"]
+- breadcrumbs << ["Inventory Commitments", inventory_commitments_reports_path]
+
+= form_tag inventory_commitments_reports_path, method: :get do |f|
+  %h2
+    Inventory Commitments
+
+    .dropdown.pull-right
+      %button.btn.btn-primary.dropdown-toggle{data: { toggle: "dropdown" } }
+        Download
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          = link_to "XLS", inventory_commitments_reports_path(format: "xls")
+          = link_to "CSV", inventory_commitments_reports_path(format: "csv")
+    .dropdown.pull-right.mgn-r-5
+      %button.btn.btn-primary.dropdown-toggle
+        Create Report
+
+  .well
+    .row
+      .col-xs-6
+        %label.control-label
+          Start Date
+        .bootstrap-datepicker.input-group.date
+          %input.form-control{type: "text", name: "start_date"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-calendar
+      .col-xs-6
+        %label.control-label
+          End Date
+        .bootstrap-datepicker.input-group.date
+          %input.form-control{type: "text", name: "end_date"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-calendar
+
+  .row
+    .col-xs-12
+      #wid-id-1.jarviswidget.no-filter{"data-widget-editbutton" => "false"}
+        %header.hidden-header
+        %div
+          .jarviswidget-editbox
+          .widget-body.no-padding
+            %table#datatable_fixed_column.table.table-striped.table-bordered{:width => "100%"}
+              %thead
+                %tr
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter TA-Number", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Stock Number", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Booked Value", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Recon Costs", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Retail Price", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Year", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Make", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Model", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Color", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter VIN", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Location", :type => "text"}
+                  %th.hasinput
+                    %input.form-control{:placeholder => "Filter Customer", :type => "text"}
+                %tr
+                  %th TA-Number
+                  %th Stock Number
+                  %th Booked Value
+                  %th Recon Costs
+                  %th Retail Price
+                  %th Year
+                  %th Make
+                  %th Model
+                  %th Color
+                  %th VIN
+                  %th Location
+                  %th Customer
+              %tbody
+                - @appraisals.each do |appraisal|
+                  %tr
+                    %td= link_to appraisal.number, [@organization, appraisal]
+                    %td= get_appraisal_value_by_name(appraisal, 'stock_number')
+                    %td= get_appraisal_value_by_name(appraisal, 'value_booked')
+                    %td= get_appraisal_value_by_name(appraisal, 'recon_costs')
+                    %td= get_appraisal_value_by_name(appraisal, 'retail_price')
+                    %td= get_appraisal_value_by_name(appraisal, 'year')
+                    %td= get_appraisal_value_by_name(appraisal, 'make')
+                    %td= get_appraisal_value_by_name(appraisal, 'model')
+                    %td= get_appraisal_value_by_name(appraisal, 'paint_color')
+                    %td= get_appraisal_value_by_name(appraisal, 'serial_no')
+                    %td= get_appraisal_value_by_name(appraisal, 'location')
+                    %td= link_to appraisal.customer.account_name, [@organization, appraisal.customer]
+
+:javascript
+  document.addEventListener("DOMContentLoaded", function(event) {
+    $('select').val("#{params[:status]}").change();
+  });

@@ -1,0 +1,15 @@
+#pinnable {
+  z-index: 99999999;
+}
+
+.pinnable {
+  &.pinned {
+    color: green;
+  }
+
+  .fa {
+    float: right;
+    padding: 8px 10px 8px 8px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,56 @@
+%br
+%h3 Template Fields
+%table.index_table.datatable.template_field
+  %thead
+    %tr
+      %th
+      %th Name
+      %th Label
+      %th Print Label
+      %th Weight
+  %tbody
+    - TemplateField.non_photos.non_text_areas.each do |template_field|
+      %tr
+        %td
+          = check_box_tag 'template_field_ids[]', template_field.id, @appraisal_column.template_fields.include?(template_field), class: 'dynamic_field'
+        %td= template_field.name
+        %td= template_field.label
+        %td= template_field.print_label
+        %td= template_field.weight
+
+%br
+%br
+%br
+%h3 Appraisal Fields
+%table.index_table.datatable.static_field
+  %thead
+    %tr
+      %th
+      %th Name
+  %tbody
+    - AppraisalColumn::STATIC_FIELDS.each do |static_field|
+      %tr
+        %td
+          = check_box_tag 'appraisal_column[static_fields][]', static_field, @appraisal_column.static_fields.include?(static_field) , class: 'static_field'
+        %td= AppraisalColumn.label_of(static_field)
+
+
+:javascript
+  $('form').submit(function(){
+    var form = $(this);
+
+    checkboxes = $('table.template_field').dataTable().$('input:checked')
+    template_field_ids = []
+    checkboxes.each(function(_, e){
+      template_field_ids.push($(e).val());
+    })
+
+    $.each(template_field_ids, function( index, value ) {
+      form.append($('<input type="hidden" name="appraisal_column[template_field_ids][]" value="'+value+'" />'));
+    });
+
+    $.each($('table.static_field').dataTable().$('input:checked'), function( index, value ) {
+      form.append($('<input type="hidden" name="appraisal_column[static_fields][]" value="'+$(this).val()+'" />'));
+    });
+
+  })

@@ -1,0 +1,177 @@
+@import "bootstrap";
+@import "pdf";
+@import "impact";
+
+$color-orange: #f26424;
+
+body.print {
+  header {
+    border-bottom: 4px solid $color-orange;
+    #company-logo {
+      padding: 5pt;
+      float: left;
+      height: 85pt;
+      text-align: center;
+      .wrapper {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      img {
+        vertical-align: middle;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    #company-info{
+      float: left;
+      padding: 16pt 22pt;
+      background-color: $color-orange;
+      h2 {
+        &.bold {
+          font-weight: bold;
+          font-size: 16pt;
+          text-transform: uppercase;
+        }
+        font-size: 12pt;
+        line-height: 18pt;
+        margin: 0;
+        color: white;
+        strong {
+          font-size: 14pt;
+        }
+      }
+      p {
+        margin-bottom: 5px;
+      }
+    }
+    .btn-orange {
+      background-color: #e58940;
+      color: white;
+      width: 90px;
+      border: none;
+      box-shadow: none;
+      font-weight: bold;
+    }
+  }
+  #hero-shot {
+    position: relative;
+    max-height: 560px;
+    overflow: hidden;
+    .price-bg {
+      background-color: #000;
+      opacity: 0.4;
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      width: 280pt;
+      height: 75pt;
+      border-top: 3px solid $color-orange;
+      border-bottom: 3px solid $color-orange;
+    }
+
+    .price-value {
+      position: absolute;
+      color: white;
+      font-size: 48pt;
+      /* font-family: "impactreg"; */
+      bottom: 70px;
+      width: 280pt;
+      right: 0;
+      text-align: center;
+    }
+  }
+  .border-bottom {
+    border-bottom: 4px solid $color-orange;
+  }
+  #contact {
+    padding: 14pt;
+    h1 {
+      font-size: 20pt;
+      margin: 5px;
+    }
+    h2 {
+      font-size: 14pt;
+      margin: 0;
+      font-weight: normal;
+      min-height: 14pt;
+    }
+    .value {
+      h2 {
+        font-weight: lighter;
+      }
+      h3 {
+        margin: 0;
+        font-size: 12pt;
+        line-height: 15pt;
+      }
+    }
+    #bio {
+      padding-top: 8pt;
+      padding-left: 0;
+      h2 {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .detail {
+    padding: 18pt;
+    section {
+      margin: 20pt 0 24pt;
+      .col-sm-8 img {
+        width: 50%;
+        border: 3px solid white;
+        float: left;
+      }
+      .col-sm-4 img {
+        width: 100%;
+      }
+
+      h2 {
+        font-weight: bold;
+        margin: 0;
+      }
+      th {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      th, td {
+        padding: 2px 10px !important;
+      }
+      td.value {
+        font-weight: bold;
+      }
+    }
+  }
+  .panel-orange {
+    .panel-heading {
+      font-weight: bold;
+      background: #b95426;
+      color: white;
+    }
+    .panel-body {
+      background: #e58940;
+      color: white;
+    }
+  }
+
+  footer {
+    padding: 16pt 8pt;
+    background-color: $color-orange;
+    color: white;
+
+    h3 {
+      margin-top: 0;
+    }
+    .terms_and_condition {
+      min-height: 102pt;
+      border-right: 1px solid white;
+    }
+
+    #map {
+      padding-left: 0;
+    }
+  }
+}

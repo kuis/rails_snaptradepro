@@ -1,0 +1,11 @@
+- if discussion.comments.present?
+  %tr
+    %td.name= "#{discussion.comments.first.user.name}"
+    %td.state-and-price
+      %strong
+        = link_to organization_appraisal_discussion_discussion_comment_path(@organization.id, @appraisal.id, discussion_id: discussion.id, id: discussion.id), remote: true, format: :js do
+          = discussion.name
+      %span.comment
+        = "#{discussion.comments.first.comment}"
+    %td.posted-time
+      = discussion.comments.first.created_at.strftime("%b %d")

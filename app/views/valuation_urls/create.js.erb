@@ -1,0 +1,13 @@
+$modal = $("#valuation-urls-creation-modal");
+
+<% if @valuation_url.persisted? %>
+  $modal.modal("hide");
+
+  $div = $("#valuation-urls");
+  $valuation_url = $("<%= j render "valuation_urls/valuation_url", valuation_url: @valuation_url %>")
+
+  $div.append($valuation_url);
+<% else %>
+  form = "<%= j render "valuation_urls/valuation_url_form", valuation_url: @valuation_url, appraisal: @appraisal, organization: @organization %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

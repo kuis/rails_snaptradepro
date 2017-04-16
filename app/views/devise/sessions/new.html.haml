@@ -1,0 +1,26 @@
+.col-md-4.col-md-offset-4.well.well-form
+  %h2 Sign in
+
+  = simple_form_for resource, as: resource_name,
+                              url: session_path(resource_name) do |f|
+
+    = f.input :email, label: false do
+      .input-group
+        = f.input_field :email, class: 'form-control input-lg',
+                                placeholder: 'Email'
+        %span.input-group-addon.glyphicon.glyphicon-user
+
+    = f.input :password, label: false do
+      .input-group
+        = f.input_field :password, class: 'form-control input-lg',
+                                placeholder: 'Password'
+        %span.input-group-addon.glyphicon.glyphicon-lock
+
+    - if devise_mapping.rememberable?
+      = f.input :remember_me, as: :boolean, wrapper: :vertical_boolean
+
+    = f.button :submit, "Sign in", class: 'btn-primary btn-block btn-lg'
+
+  = flash_messages layout_flash: false
+
+  = render "devise/shared/links"

@@ -1,0 +1,9 @@
+.row#valuation-urls-container
+  %h2
+    %span
+      Valuation URLS
+    = link_to "Create a new URL", "#valuation-urls-creation-modal", data: { toggle: "modal" }, class: "btn btn-default add-url-btn"
+  %table-responsive
+    %table.table#valuation-urls
+    - @valuation_urls.each do |url|
+      = render "valuation_urls/valuation_url", valuation_url: url

@@ -1,0 +1,8 @@
+%tr
+  %td.name= "#{comment.user.name}"
+  %td.state-and-price(class="#{'blurred' if comment.hidden?}")
+    %strong= "#{comment.state_of_sale} for #{number_to_currency(comment.price)}"
+    %span.comment
+      = "- #{comment.comment}"
+  %td.posted-time
+    = comment.created_at.strftime("%b %d")

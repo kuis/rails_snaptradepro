@@ -1,0 +1,39 @@
+- breadcrumbs << [@organization.name, organization_path(@organization)]
+- breadcrumbs << ["Members", organization_path(@organization)]
+- breadcrumbs << [@member.name]
+
+%h1.page-title.txt-color-blueDark
+  Profile - #{@member.name}
+
+= simple_form_for @member, as: :member, url: organization_member_path(@organization, @member), defaults: {wrapper_html: { class: 'col-sm-6' }} do |f|
+  %h3 User Profile
+  .row
+    = f.input :email, readonly: !can_edit?(@member)
+    = f.input :first_name, readonly: !can_edit?(@member)
+    = f.input :last_name, readonly: !can_edit?(@member)
+    = f.input :street_address, readonly: !can_edit?(@member)
+    = f.input :city, readonly: !can_edit?(@member)
+    = f.input :state, readonly: !can_edit?(@member)
+    = f.input :postal_code, readonly: !can_edit?(@member)
+    = f.input :business_phone, readonly: !can_edit?(@member)
+    = f.input :mobile_phone, readonly: !can_edit?(@member)
+  %h3 Member of #{@organization.name}
+  = f.fields_for :memberships, @organization.memberships.by_user(@member), defaults: {wrapper_html: { class: 'col-sm-6' }} do |m|
+    .form-group
+      - if can_edit?(@member)
+        = image_tag m.object.avatar.url, class: "img-responsive img-thumbnail img-editable", style: "width: 150px"
+        = m.file_field :avatar, accept: 'image/jpeg, image/png, image/gif, image/jpg', class: 'hide file-avatar'
+        %p Click to add your image
+      - else
+        = image_tag m.object.avatar.url, class: "img-responsive img-thumbnail", style: "width: 150px"
+    .row
+      = m.hidden_field :organization_id
+      = m.input :email, readonly: !can_edit?(@member)
+      = m.input :job_title, label: "Role Title", readonly: !can_edit?(@member)
+      = m.input :contact_phone, label: "Public Contact Phone", readonly: !can_edit?(@member)
+      - if can_edit?(@member)
+        = m.input :active
+
+  - if can_edit?(@member)
+    = f.submit "Update", class: "btn btn-primary"
+  = link_to "Back", organization_members_path(@organization), class: "btn btn-default"

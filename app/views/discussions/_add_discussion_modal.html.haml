@@ -1,0 +1,8 @@
+.modal#discussion-creation-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: "modal" }} &times;
+        %h4.modal-title Create a Discussion
+      .modal-body
+        = render "discussions/discussion_form", discussion: @discussion, appraisal: @appraisal, organization: @organization

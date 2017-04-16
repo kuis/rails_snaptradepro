@@ -1,0 +1,18 @@
+%br
+%h3 Appraisal Templates
+%table.index_table.datatable
+  %thead
+    %tr
+      %th{:style => "display:none"}
+      %th ID
+      %th Name
+      %th Label
+      %th Agent
+  %tbody
+    - organization.appraisal_templates.each do |appraisal_template|
+      %tr
+        %td{:style => "display:none"}
+        %td= appraisal_template.id
+        %td= appraisal_template.name
+        %td= appraisal_template.label
+        %td= appraisal_template.agent? ? "Yes" : "No"

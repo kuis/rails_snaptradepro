@@ -1,0 +1,53 @@
+- equipment_type_ids = f.object.equipment_types.map(&:id)
+%br
+%h3 Equipment Types
+%table#equipment_types-table.index_table.datatable
+  %thead
+    %tr
+      %th{style: "width:5%"}
+      %th{style: "width:10%"} User Creatable?
+      %th ID
+      %th Name
+      %th Label
+  %tbody
+    - EquipmentType.all.each do |equipment_type|
+      %tr
+        %td
+          = check_box_tag 'equipment_types[]', equipment_type.id, equipment_type_ids.include?(equipment_type.id)
+        %td
+          - oet = f.object.organization_equipment_types.find_by(equipment_type_id: equipment_type.id)
+          = check_box_tag '', '', oet.try(:user_creatable),{class: "oet", oet_id: oet.try(:id)} if oet
+        %td= equipment_type.id
+        %td= equipment_type.name
+        %td= equipment_type.label
+
+:javascript
+  $('form').submit(function(){
+    checkboxes = $('table#equipment_types-table').dataTable().$('input:checked')
+    checkboxes.each(function(_, e){
+      $('form').append("<input type='hidden' name='organization[equipment_type_ids][]' value='" + $(e).val() + "'>")
+    })
+  })
+
+  $('#organization_is_equipment_type_enabled').click(function(){
+     $('input[type="checkbox"][name="equipment_types[]"]:checked').map(function() { $(this).prop('checked',false); });
+     if ($(this).prop('checked')) {
+       $('.et_wrapper').show();
+     }
+     else {
+       $('.et_wrapper').hide();
+     }
+  })
+  $("#equipment_types-table").delegate(".oet","click",function(){
+  var clicked_checkbox = $(this)
+  var ato_id = $(this).attr("oet_id")
+   $.ajax({
+      url: '#{update_oet_user_creatable_url}?id='+$(this).attr("oet_id")+'&user_creatable='+$(this).prop('checked'),
+      type: 'put',
+      success: function(response){
+        if (response!="true") {
+          clicked_checkbox.prop('checked',false)
+        }
+      }
+   })
+  })

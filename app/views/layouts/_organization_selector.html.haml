@@ -1,0 +1,36 @@
+/ - organizations = current_user.visible_organizations
+/ 
+/ .btn-group
+/   - if current_organization
+/     = link_to current_organization.name,
+/               organization_appraisals_path(current_organization),
+/               class: "btn btn-default"
+/   - else
+/     = link_to "Select an Organization", "#", class: "btn btn-default"
+/ 
+/   %button.btn.btn-default.dropdown-toggle{ data: { toggle: "dropdown" } }
+/     %span.caret
+/     %span.sr-only Toggle Dropdown
+/ 
+/   %ul.dropdown-menu
+/     - organizations.each do |organization|
+/       %li
+/         = link_to organization.name,
+/                   organization_appraisals_path(organization)
+
+
+- organizations = current_user.visible_organizations
+
+.project-context
+  %span.label Organization:
+  %span.project-selector.dropdown-toggle{"data-toggle" => "dropdown"}
+    - if current_organization
+      = current_organization.name
+    - else
+      Select Organization
+    %i.fa.fa-angle-down
+  %ul.dropdown-menu
+    - organizations.each do |organization|
+      %li
+        = link_to organization.name,
+                  organization_appraisals_path(organization)

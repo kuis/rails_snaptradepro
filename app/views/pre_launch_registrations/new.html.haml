@@ -1,0 +1,11 @@
+%h2.center-text
+  Sign Up For Snap Trade Pro Pre-Launch Registration & Pricing
+
+.well.center-text
+  = simple_form_for @pre_launch_registration, html: { class: "form-inline" } do |f|
+    - if @pre_launch_registration.errors.any?
+      .notify-error.text-danger You must complete all of the fields!
+    = f.input :first_name, label: false, placeholder: "First Name", error: false
+    = f.input :last_name, label: false, placeholder: "Last Name", error: false
+    = f.input :email, label: false, placeholder: "Email Address", error: false
+    = f.submit "Notify Me", class: "btn btn-primary"

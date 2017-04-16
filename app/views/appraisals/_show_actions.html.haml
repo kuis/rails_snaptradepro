@@ -1,0 +1,41 @@
+= link_to "Edit Appraisal",
+          edit_organization_appraisal_path(@organization, @appraisal),
+          class: "btn btn-default"
+.btn-group
+  %button.btn.btn-default.dropdown-toggle{ "data-toggle"=>"dropdown", "type"=>"button" }
+    Clone Appraisal
+  %ul.dropdown-menu{ "role"=>"menu" }
+    %li.clone-panel.panel-body
+      = form_tag clone_organization_appraisal_path(@organization, @appraisal),
+                 method: :put do
+        .input-group
+          = text_field_tag :number_of_clones, nil, placeholder: "Number of Clones", class: "form-control numeric-field"
+          %span.input-group-btn
+            %button.btn.btn-default Go!
+
+- if @appraisal.archived?
+  = link_to "Un-archive Appraisal",
+            archive_organization_appraisal_path(@organization, @appraisal, unarchive: true),
+            class: "btn btn-default", method: "put"
+- else
+  = link_to "Archive Appraisal",
+            archive_organization_appraisal_path(@organization, @appraisal),
+            class: "btn btn-default", method: "put",
+            data: { confirm: "Are you sure you want to archive the appraisal?" }
+.btn-group
+  %button.btn.btn-default.dropdown-toggle{ "data-toggle"=>"dropdown", "type"=>"button" }
+    View Forms
+  - if @appraisal.appraisal_template.print_templates.map(&:layout_type).present?
+    %ul.dropdown-menu{ "role"=>"menu" }
+      - @appraisal.appraisal_template.print_templates.map(&:layout_type).each do |layout|
+        %li
+          = link_to t("print_template.#{layout}"),
+                eval("#{layout}_organization_appraisal_path(@organization, @appraisal)")
+- if @organization.is_equipment_type_enabled?
+  .btn-group
+    %button.btn.btn-default.dropdown-toggle{ "data-toggle"=>"dropdown", "type"=>"button" }
+      Convert To
+    %ul.dropdown-menu{ "role"=>"menu" }
+      - @appraisal.can_be_converted_to_ets.each do |et|
+        %li
+          = link_to et.name_with_label, "#et-conversion-modal", data: { toggle: "modal" }, class: "btn btn-default et-conversion", id:'et-conversion', et_id:et.id

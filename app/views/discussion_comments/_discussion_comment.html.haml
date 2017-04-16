@@ -1,0 +1,7 @@
+%tr
+  %td.name= "#{comment.user.name}"
+  %td.state-and-price
+    %span.comment
+      = "#{comment.comment}"
+  %td.posted-time
+    = comment.created_at.strftime("%b %d")

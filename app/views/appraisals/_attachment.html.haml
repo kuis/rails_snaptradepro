@@ -1,0 +1,87 @@
+.row
+  .col-sm-12
+    = basic_jarvis_box "Attachments" do
+      %table.table.table-hover
+        %thead
+          %tr
+            %th Name
+            %th Size
+            %th Type
+            %th Uploaded By
+            %th Uploaded At
+            %th Action
+        %tbody#attachments
+          - @appraisal.attachments.each do |attachment|
+            %tr{id: "attachment_#{attachment.id}"}
+              %td= link_to attachment.file_name, attachment.file_url, target: "_blank"
+              %td= attachment.file_size
+              %td= attachment.file_type
+              %td= attachment.uploader.name
+              %td= attachment.created_at.strftime("%F %H:%M")
+              %td
+                = link_to attachment.file_url, class: "btn btn-primary btn-sm", target: "_blank", download: attachment.file_name do
+                  %i.fa.fa-download
+                  &nbsp; Download
+
+                %a{ class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?" }, onclick: "onDeleteFile(#{attachment.id})"}
+                  %i.fa.fa-trash
+                  &nbsp; Delete
+
+          %tr.template.hide
+            %td#file_name
+            %td#file_size
+            %td#file_type
+            %td#uploader
+            %td#created_at
+            %td#action
+              = link_to "#", class: "download btn btn-primary btn-sm", target: "_blank" do
+                %i.fa.fa-download
+              %a{ class: "delete btn btn-danger btn-sm", data: { confirm: "Are you sure?" } }
+                %i.fa.fa-trash
+      %br
+      = form_for :attachment do |f|
+        = f.filepicker_field :file_url, onchange: 'onFileUpload(event)', button_text: "Add New File", class: "btn btn-default"
+
+:javascript
+  function onFileUpload(event) {
+    $.each(event.fpfiles, function(i, file){
+      $.ajax({
+        type: "POST",
+        url: "#{attachments_path}",
+        data: {
+          attachment: {
+            attachable_id: "#{@appraisal.id}",
+            attachable_type: "Appraisal",
+            file_name: file.filename,
+            file_size: file.size,
+            file_type: file.mimetype,
+            file_url: file.url
+          }
+        }
+      }).done(function(data){
+        var tr = $("tr.template").clone()
+        tr.find("#file_name").html("<a href='" + data.attachment.file_url + "' target='_blank'>" + data.attachment.file_name + "</a>");
+        tr.find("#file_size").text(data.attachment.file_size);
+        tr.find("#file_type").text(data.attachment.file_type);
+        tr.find("#created_at").text(data.attachment.created_at);
+        tr.find("#uploader").text(data.attachment.uploader);
+        tr.find("#action a.download").attr("href", data.attachment.file_url);
+        tr.find("#action a.download").attr("download", data.attachment.file_name);
+        tr.find("#action a.delete").attr("onclick", "onDeleteFile(" + data.attachment.id + ")");
+
+        tr.removeClass("template");
+        tr.removeClass("hide");
+        tr.attr("id", "attachment_" + data.attachment.id);
+        $("#attachments").append(tr);
+      })
+    })
+  }
+
+  function onDeleteFile(attachment_id) {
+    $.ajax({
+      type: "DELETE",
+      url: "#{attachments_path}/" + attachment_id,
+    }).done(function(data){
+      $("#attachment_" + data.id).remove();
+    })
+  }

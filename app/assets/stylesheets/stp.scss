@@ -1,0 +1,171 @@
+$checklist-color: #71843f;
+$discussion-color: #57889c;
+$opinion-color: #6e3671;
+$urls-color: #a65858;
+$stp-brand: #820000;
+
+#valuations {
+  .full-width-ribbon {
+    .right {
+      & > a {
+        float: right;
+        margin-left: 10px;
+      }
+    }
+  }
+  ul.valuations {
+    text-align: center;
+    /*margin: 0;*/
+    margin: 20px 0 30px;
+    padding: 0;
+    /*margin-bottom: 10px;*/
+    li {
+      display: inline-block;
+      margin: 0 8px;
+      a {
+        border-radius: 2px;
+        box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.05) inset;
+        /* padding: 1px 5px;*/
+        padding: 6px 12px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        vertical-align: middle;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      &.current a,
+      & a:hover,
+      & a:active {
+        background-color: #e6e6e6;
+        border-color: #adadad;
+        color: #333;
+      }
+    }
+
+
+  }
+
+  .section-wrapper {
+    margin-top: -65px;
+    padding-top: 100px;
+  }
+
+  h2 {
+    margin-bottom: 7px;
+    margin-top: 0;
+  }
+
+  #checklists h2 {
+    color: $checklist-color;
+  }
+  #discuss h2 span {
+    color: $discussion-color;
+  }
+  #opinion {
+    h2 span {
+      color: $opinion-color;
+    }
+  }
+
+  #discussion-comments-container,
+  #valuation-url-comments-container,
+  #discussions-container,
+  #valuation-urls-container{
+    margin-left: 0px;
+  }
+
+
+  #discussions-container.row,
+  #valuation-urls-container.row {
+    margin-left: -15px;
+  }
+
+  #valuation-urls-container #valuation-urls tr td.state-and-price {
+    min-width: 50px                                               ;
+    width: auto;
+  }
+
+  #checklist-container {
+    margin-left: -15px;
+  }
+
+  #opinions {
+    #valuation-comments-container {
+      margin-left: 0;
+    }
+  }
+
+  #urls h2 span {
+    color: $urls-color;
+  }
+
+  h1.page-title {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width:800px ) {
+    #ribbon .breadcrumb {
+      /*padding: 0 !important;*/
+      max-width: 500px;
+    }
+
+    .page-footer {
+      height: auto;
+    }
+
+
+  }  @media (max-width:767px ) {
+  #valuations ul.valuations li a {
+    padding: 7px 8px;
+  }
+
+  .full-width-ribbon {
+    .right {
+      & > a {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .section-wrapper {
+    margin-top: -55px;
+    padding-top: 160px;
+    &#navigator {
+      margin-top: -160px;
+    }
+
+    &#opinions {
+      margin-top: -120px;
+      padding-top: 120px;
+      margin-bottom: 50px;
+    }
+    &#discuss{
+      margin-top: -70px;
+      padding-top: 110px;
+    }
+    &#urls,&#checklists {
+      margin-top: -55px;
+      padding-top: 145px;
+      position: relative;
+      top: -85px;
+    }
+
+  }
+
+  .ribbon-button-alignment {
+    display: none;
+  }
+}
+
+}
+
+ul#to-top {
+  text-align: right;
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+

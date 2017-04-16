@@ -1,0 +1,12 @@
+$modal = $("#check-list-item-creation-modal");
+
+<% if @check_list_item.persisted? %>
+  $modal.modal("hide");
+
+  $checklist_item = $("<%= j render "check_list_item", check_list_item: @check_list_item %>");
+
+  $("#checklist-item-<%= "#{@check_list_item.id}" %>").parent().replaceWith($checklist_item)
+<% else %>
+  form = "<%= j render "check_list_item_edit_form", check_list_item: @check_list_item %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

@@ -1,0 +1,56 @@
+.comment {
+  margin: 20px 0px 10px 0px;
+}
+
+#valuation-comments-container {
+  h2 {
+    color: #6dc6eb;
+    margin-left: 15px;
+
+    span {
+      margin-right: 10px;
+    }
+  }
+
+  #valuation-comments {
+    font-size: 14px;
+    width: 100%;
+
+    tr {
+      border-bottom: 1px solid;
+      border-color: lightgray;
+
+      td {
+        padding: 15px;
+
+        &.name {
+          min-width: 50px;
+          width: 50px;
+        }
+
+        &.state-and-price {
+          color: #666;
+          /*min-width: 630px;
+          width: 630px;*/
+        }
+
+        &.blurred {
+          -webkit-filter: blur(5px);
+          -moz-filter: blur(5px);
+          -o-filter: blur(5px);
+          -ms-filter: blur(5px);
+          filter: blur(5px);
+        }
+
+        .comment {
+          color: #666;
+        }
+
+        &.posted-time {
+          font-weight: bold;
+          color: #999;
+        }
+      }
+    }
+  }
+}

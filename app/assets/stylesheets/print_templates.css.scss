@@ -1,0 +1,82 @@
+// Place all the styles related to the print_templates controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#print_layout_content {
+  width: 860px;
+}
+
+#block_container {
+  position: absolute;
+  bottom: 0;
+}
+
+.draggable {
+  width: 240px;
+  height: 100px;
+  float: left;
+  margin: 5px 15px;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+
+  position: relative;
+  i.fa-times {
+    padding-top: 5px;
+    padding-right: 5px;
+  }
+  .text-center {
+    i {
+      color: #ccc;
+    }
+  }
+  select {
+    position: absolute;
+    bottom: 0;
+  }
+
+}
+
+.sortable {
+  min-height: 400px;
+  border: 1px solid #ccc;
+}
+
+#photo_block {
+  border: 1px dashed #ccc;
+  i.fa-times {
+    display: none;
+  }
+}
+
+#table_block {
+  border: 1px dashed #ccc;
+
+  i.fa-times {
+    display: none;
+  }
+}
+
+.divider {
+  border: 1px dashed #bbb;
+  background-color: #ccc;
+  width: 240px;
+  margin: 5px 15px;
+  height: 10px;
+  i.fa-times {
+    display: none;
+  }
+}
+#appraisal_template {
+  width: 550px;
+  position: relative;
+
+  #container {
+    width: 270px;
+    float: left;
+  }
+  #clonable.affix {
+    top: 110px;
+    left: 504px;
+    width: 300px;
+  }
+}

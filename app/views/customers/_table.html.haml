@@ -1,0 +1,43 @@
+.row
+  .col-xs-12
+    #wid-id-1.jarviswidget.no-filter{"data-widget-editbutton" => "false"}
+      %header.hidden-header
+      %div
+        .jarviswidget-editbox
+        .widget-body.no-padding
+          %table#datatable_fixed_column.table.table-striped.table-bordered{:width => "100%"}
+            %thead
+              %tr
+                %th
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter Account", :type => "text"}/
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter First Name", :type => "text"}/
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter Last Name", :type => "text"}/
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter Email", :type => "text"}/
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter Business Phone", :type => "text"}/
+                %th.hasinput
+                  %input.form-control{:placeholder => "Filter Date Created", :type => "text"}/
+              %tr
+                %th
+                %th Account
+                %th First Name
+                %th Last Name
+                %th Email
+                %th Business Phone
+                %th Created Date
+
+            %tbody
+              - customers.each do |customer|
+                %tr
+                  %td
+                    %input.checkboxes{type: "checkbox", name: "customer_ids[]", value: "#{customer.id}"}
+                  %td= link_to customer.account_name, [@organization, customer]
+                  %td= customer.first_name
+                  %td= customer.last_name
+                  %td= customer.email
+                  %td= customer.business_phone
+                  %td= customer.created_at

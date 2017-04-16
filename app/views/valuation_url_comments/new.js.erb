@@ -1,0 +1,12 @@
+$discussion_modal = $("<%= j render "valuation_url_comments/add_valuation_url_comment_modal" %>")
+$("body").append($discussion_modal)
+
+$modal = $("<%= j render 'valuation_url_comments/add_valuation_url_comment_modal' %>");
+
+if ($("#valuation-url-comment-creation-modal").length > 0) {
+    $("#valuation-url-comment-creation-modal").remove()
+}
+
+$("body").append($modal);
+
+$('#valuation-url-comment-creation-modal').modal();

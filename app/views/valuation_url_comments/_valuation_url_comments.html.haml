@@ -1,0 +1,9 @@
+.row#valuation-url-comments-container
+  %h2
+    %span
+      = link_to truncate(@valuation_url.url, length: 21), @valuation_url.url
+    = link_to "Add comment", new_valuation_url_comment_path(valuation_url_id: @valuation_url.id, id: @valuation_url.id), remote: true, class: "btn btn-default add-valuation-url-comment-btn"
+    = link_to "Back to Discussions", organization_appraisal_valuation_url_path(@appraisal.organization.id, @appraisal.id, id: @valuation_url.id, format: :js), remote: true, class: "btn btn-default back-to-discussions-btn"
+  %table#valuation-url-comments
+    - valuation_url_comments.each do |comment|
+      = render "valuation_url_comment", comment: comment

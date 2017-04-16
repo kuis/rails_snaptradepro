@@ -1,0 +1,43 @@
+- breadcrumbs << [@appraisal.customer.account_name, nil]
+- breadcrumbs << [@appraisal.human_title, organization_appraisal_path(@organization, @appraisal)]
+- breadcrumbs << "History"
+
+%h2 History of changes for #{@field_entry.template_field.label}
+
+.center-text.actions-top
+  = link_to "Back to Appraisal",
+    organization_appraisal_path(@organization, @appraisal),
+    class: "btn btn-default"
+
+.row
+  .col-xs-12
+    #wid-id-1.jarviswidget.no-filter{"data-widget-editbutton" => "false"}
+      %header.hidden-header
+      %div
+        .jarviswidget-editbox
+        .widget-body.no-padding
+          %table#datatable_fixed_column.table.table-striped.table-bordered{:width => "100%"}
+            %thead
+              %tr
+                %th Date Changed
+                %th Original Value
+                %th New Value
+                %th Who Changed?
+            %tbody
+              - @history.each do |history|
+                %tr
+                  %td= history.created_at
+
+                  - first_value = history.object_changes.values.first.first
+                  - last_value = history.object_changes.values.first.last
+
+                  - if @field_entry.template_field.field_type == "Photo"
+                    %td= render "history_image", value: first_value
+                    %td= render "history_image", value: last_value
+                  - else
+                    %td= history.object_changes.values.first.first
+                    %td= history.object_changes.values.first.last
+                  - if history.whodunnit.present?
+                    %td= User.find(history.whodunnit).name
+                  - else
+                    %td User removed

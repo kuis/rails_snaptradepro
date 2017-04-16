@@ -1,0 +1,150 @@
+:sass
+  body.print
+    .hero-shot
+      background-image: url(#{get_appraisal_entry_value_by_name(@appraisal, "hero_shot")})
+%header
+  .clearfix.head
+    .col-sm-5
+      .hero-shot
+        = image_tag get_appraisal_entry_value_by_name(@appraisal, "hero_shot"), class: "img-responsive"
+    .col-sm-7.model
+      %h1
+        #{get_appraisal_entry_value_by_name(@appraisal, "year")}
+        &nbsp;
+        #{get_appraisal_entry_value_by_name(@appraisal, "make")}
+      %h2
+        #{get_appraisal_entry_value_by_name(@appraisal, "model")}
+  .clearfix.head-section
+    .col-sm-5
+    .col-sm-7
+      %table#head-data
+        %tr
+          %td.name.bold Unit No.
+          %td.value= @appraisal.unit
+        %tr
+          %td.bold VIN
+          %td= get_appraisal_entry_value_by_name(@appraisal, "serial_no")
+        %tr
+          %td.bold Mileage
+          %td= get_appraisal_entry_value_by_name(@appraisal, "mileage")
+        %tr
+          %td.bold Number
+          %td= @appraisal.number
+
+- template_field_ids = @template.print_template_blocks.numeric.by_page(0).map(&:blockable_id)
+- template_fields = template_field_ids.collect{|template_field_id| TemplateField.find_by(id: template_field_id)}.compact
+%main
+  %section
+    %table#form-value
+      %tr.values
+        - template_fields.map(&:label).each do |template_field_label|
+          %td= number_to_currency @appraisal.valuation.try(template_field_label.to_s.parameterize.underscore.to_sym)
+      %tr
+        - template_fields.each do |template_field|
+          %td= template_field.print_label
+
+  %section
+    %table#disposition.title_table
+      %tr.title
+        %td{:colspan => 4} Disposition
+      %tr
+        %td.bold Trade Conditions
+        %td{:colspan => 3}= @appraisal.valuation.try(:trade_conditions)
+      %tr.odd
+        %td.bold Approved Good Until Date
+        %td= @appraisal.valuation.try(:approved_good_until_date)
+        %td.bold Expected Acquisition Date
+        %td= @appraisal.valuation.try(:expected_acquisition_date)
+
+  %section
+    %table#organization
+      %tr
+        %td.name
+          %h3= @appraisal.organization.name
+          %h5= @appraisal.organization.full_address
+          %td.logo.text-center= image_tag @appraisal.organization.company_logo.url
+
+  %section
+    %table#customer.title_table
+      %tr.title
+        %td{:colspan => 2} Customer
+      %tr
+        %td= @appraisal.customer.account_name
+        %td= @appraisal.customer.business_phone
+      %tr.odd
+        %td= @appraisal.customer.name
+        %td= @appraisal.customer.email
+
+  %section
+    .grey-container.clearfix
+      .col-sm-6
+        %select#rep.form-control
+          %option
+          - @organization.representatives.each do |rep|
+            %option{value: rep.id, "data-email" => rep.email}=rep.name
+
+        %i Sales Representative
+      .col-sm-6
+        .email
+          %span.glyphicon.glyphicon-envelope
+          %span.content
+
+  %section
+    .grey-container.clearfix
+      .col-sm-6
+        %select#sales_manager.form-control
+          %option
+          = options_from_collection_for_select(@organization.users.sales_managers, 'id', 'name')
+        %i Managers Name
+      .col-sm-6
+        .signature
+          Signature Line
+
+  - @blocks.each_with_index do |block, i|
+    %section
+      - hidden_fields = block.properties["hidden_fields"]
+      - hidden_fields = hidden_fields ? hidden_fields.split(",") : []
+      - appraisal_category = @appraisal_categories.select{|ac| ac.id == block.blockable_id}.first
+      - if appraisal_category.present?
+        %table.categories
+          %tr.title
+            %th=appraisal_category.label
+            %td.value
+          - appraisal_category.template_fields.non_photos.non_text_areas.weighted.each do |field|
+            - next if hidden_fields.include?(field.id.to_s)
+            %tr.fields
+              %th= field.web_label
+              %td.value= @appraisal.field_readable_value(field)
+
+  %section
+    %table.title_table
+      %tr.title
+        %td Comments & Observation
+      %tr.odd
+        %td= get_appraisal_entry_value_by_name(@appraisal, "appraisal_comment")
+
+%footer.clearfix
+  = @organization.internal_trade_policy
+
+- content_for :javascript do
+  :javascript
+    pdf_link = "#{pdf_preview_link(@organization, @appraisal)}";
+
+    $('#print_template').on('click', function(e) {
+      var sales_manager = $('#sales_manager').val();
+      var rep = $('#rep').val();
+      if (sales_manager == '' || rep == '')
+        $('#confirm-message').modal();
+      else
+        window.location.replace(pdf_link + "?sales_manager=" + sales_manager + "&rep=" + rep);
+    });
+
+    $('body').on('click', '#confirm-message .btn-primary', function(e) {
+      var sales_manager = $('#sales_manager').val();
+      var rep = $('#rep').val();
+      window.location.replace(pdf_link + "?sales_manager=" + sales_manager + "&rep=" + rep);
+    });
+
+    $('#rep').on('change', function(){
+      $('.email .content').text($(this).find('option:selected').data('email'));
+    })

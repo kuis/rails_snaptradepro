@@ -1,0 +1,45 @@
+= simple_form_for [@organization, @appraisal],
+                  html: { class: "appraisal-form" } do |f|
+
+  = f.input :appraisal_template_id, as: :hidden
+
+  .form-group.actions.actions-top
+    = render 'appraisals/form_actions', f: f
+
+  - if f.object.errors.any?
+    .alert.alert-danger
+      Required fields have not been completed.
+
+  .row
+    .col-xs-6
+      = basic_jarvis_box "Details" do
+        = f.input :number, disabled: true, label: "TA-Number",
+          input_html: { name: "" }
+
+        = f.input :name, label: "Appraisal Name"
+
+        .customer-field
+          = f.input :customer_id, as: :select, collection: @organization.customers.order(:account_name).map { |c| [c.account_name, c.id] }, required: true
+          .create-customer
+            = link_to "Create Customer", "#",
+                      data: { toggle: "modal", target: "#customer-creation-modal" }
+
+        = f.input :status, as: :select, collection: Appraisal.status.options
+        = f.input :unit
+
+
+    - if @id_category.present?
+      .col-xs-6
+        = render 'form_category', f: f, appraisal: @appraisal, category: @id_category
+
+
+  - @categories_without_id.in_groups_of(2) do |category_row|
+    .row
+      - category_row.compact.each do |category|
+        .col-xs-6
+          = render 'form_category', f: f, appraisal: @appraisal, category: category
+
+  .form-group.actions
+    = render 'appraisals/form_actions', f: f
+
+= render 'customer_creation_modal', organization: @organization

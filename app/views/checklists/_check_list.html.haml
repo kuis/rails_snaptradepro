@@ -1,0 +1,18 @@
+.row.check_list.comment.check-list
+  .col-sm-12
+    %div.checklist-name(id="checklist-#{check_list.id}")
+      %strong= check_list.name
+      .checklist-name-hover
+        = link_to checklist_path(check_list.id), remote: true, method: :delete do
+          = fa_icon "trash"
+        = link_to "Edit", edit_checklist_path(check_list.id), remote: true
+    %ul(id="check-list-#{check_list.id}")
+      - check_list.checklist_items.where(completed_at: nil).each do |item|
+        = render "checklist_items/check_list_item", check_list_item: item
+      %li.checklist-item-add-btn
+        %a(href="#{new_checklist_checklist_item_path(checklist_id: check_list.id)}" data-remote="true")Add an item
+    %ul.completed-checklist-items
+      - check_list.checklist_items.where("completed_at IS NOT NULL").each do |item|
+        = render "checklist_items/check_list_item", check_list_item: item
+
+%hr

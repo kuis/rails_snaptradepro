@@ -1,0 +1,69 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- if filtered_equipment_type
+  - breadcrumbs << [filtered_equipment_type.name_with_label, organization_appraisals_path(@organization,equipment_type_id: params[:equipment_type_id])]
+  - appraisal_templates = policy_scope(current_organization.appraisal_templates).with_equipment_type(filtered_equipment_type)
+- elsif @organization.is_equipment_type_enabled?
+  - breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+  - equipment_types = current_organization.equipment_types
+- else
+  - breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+  - appraisal_templates = policy_scope(current_organization.appraisal_templates)
+
+
+- if filtered_customer
+  - breadcrumbs << [filtered_customer.account_name, organization_appraisals_path(@organization, customer_id: params[:customer_id])]
+
+= form_tag bulk_archive_organization_appraisals_path(@organization), method: :put do |f|
+  %h2
+    #{@organization.name} - #{filtered_equipment_type ? filtered_equipment_type.name_with_label : "Appraisals"}
+    - if filtered_customer
+      \- #{filtered_customer.account_name}
+    - elsif params[:status]
+      \- &nbsp;
+      %span.filtered-status= t("status.#{params[:status]}")
+    - elsif params[:member_id]
+      \- #{filtered_member.name}
+
+    %button.btn.btn-warning.pull-right
+      = @organization.is_equipment_type_enabled? ? "Archive Selected Units" : "Archive Selected Appraisals"
+
+    - if filtered_equipment_type.present?
+      .dropdown.pull-right.mgn-r-5
+        %button.btn.btn-primary.create_btn.dropdown-toggle{data: { toggle: "dropdown" } }
+          Create New
+          = filtered_equipment_type.name_with_label
+          %span.caret
+        %ul.dropdown-menu
+          - appraisal_templates.where("appraisal_templates_organizations.is_visible=?",true).each do |template|
+            %li
+              = link_to template.label,
+                        new_organization_appraisal_path(@organization,
+                        appraisal_template_id: template.id)
+    - elsif @organization.is_equipment_type_enabled?
+      .dropdown.pull-right.mgn-r-5
+        %button.btn.btn-primary.create_btn.dropdown-toggle{data: { toggle: "dropdown" } }
+          Create New Unit
+          %span.caret
+        %ul.dropdown-menu.multi-level
+          - equipment_types.each do |equipment_type|
+            %li.dropdown-submenu
+              = link_to equipment_type.name_with_label,"javascript:void(0)"
+              %ul.dropdown-menu
+                - equipment_type.appraisal_templates_of(current_organization).each do |template|
+                  %li
+                    = link_to template.label,
+                              new_organization_appraisal_path(@organization,
+                              appraisal_template_id: template.id)
+    - else
+      .dropdown.pull-right.mgn-r-5
+        %button.btn.btn-primary.create_btn.dropdown-toggle{data: { toggle: "dropdown" } }
+          Create New Appraisals
+          %span.caret
+        %ul.dropdown-menu
+          - appraisal_templates.where("appraisal_templates_organizations.is_visible=?",true).each do |template|
+            %li
+              = link_to template.label,
+                        new_organization_appraisal_path(@organization,
+                        appraisal_template_id: template.id)
+
+  = render 'appraisals/table', appraisals: @appraisals

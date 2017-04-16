@@ -1,0 +1,13 @@
+$modal = $("#comment-creation-modal");
+
+<% if @comment.persisted? %>
+  $modal.modal("hide");
+
+  $div = $("#valuation-comments");
+  $comment = $("<%= j render "comment", comment: @comment %>");
+
+  $div.append($comment);
+<% else %>
+  form = "<%= j render "comment_form", appraisal_comment: @comment, appraisal: @appraisal, organization: @organization %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

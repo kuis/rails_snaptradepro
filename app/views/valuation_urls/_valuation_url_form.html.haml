@@ -1,0 +1,12 @@
+= simple_form_for valuation_url, remote: true,
+                  url: organization_appraisal_valuation_urls_path(organization, appraisal, format: :js) do |f|
+  = f.input :url
+  = f.input :year
+  = f.input :make
+  = f.input :model
+  = f.input :retail_value
+  = f.input :wholesale_value
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+             data: { disable_with: "Submitting ..." }

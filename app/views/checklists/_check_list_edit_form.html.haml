@@ -1,0 +1,7 @@
+= simple_form_for @check_list, remote: true do |f|
+  = f.input :name, label: "Name"
+  = f.hidden_field :appraisal_id, value: @check_list.appraisal.id
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+             data: { disable_with: "Submitting ..." }

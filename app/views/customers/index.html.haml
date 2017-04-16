@@ -1,0 +1,10 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Customers", organization_customers_path(@organization)]
+
+= form_tag bulk_archive_organization_customers_path(@organization), method: :put do |f|
+  %h2
+    Customers
+    %button.btn.btn-warning.pull-right Archive
+    = link_to "New Customer", new_organization_customer_path(@organization),
+              class: "btn btn-primary pull-right mgn-r-5"
+  = render "customers/table", customers: @customers

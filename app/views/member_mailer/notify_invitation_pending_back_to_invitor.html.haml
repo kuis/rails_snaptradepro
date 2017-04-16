@@ -1,0 +1,28 @@
+%p Hello #{@invitor.name},
+%p You have invited #{@member.name} to #{@membership.organization.name} within Snap Trade Pro about 24 hours ago. Currently the invitation has not been accepted.
+
+%p The invitation status will be changed to “Invitation Pending” in your list of Organization Members on your Member page.
+
+%p When the invitation is accepted you will be notified by email and the invitation status will change to “Invitation Accepted”
+
+%p This invitation will remain available for 30 days until it is accepted at which time the invitation will be revoked and the invitation status changed to “Invitation Revoked”.
+
+%p You can resend any invitation, which has been revoked by clicking on the “Resend Invitation” button for your new Member.
+
+%p Feel free to contact me at the email addresses listed below regarding anything Snap Trade Pro.
+
+%p 
+  Vince Green 
+  = link_to 'vince@inbounddealer.com', "mail_to('vince@inbounddealer.com')"
+
+%p 
+  Access the Snap Trade Pro web application by logging into 
+  = link_to new_session_url(:user), new_session_url(:user)
+  or by going to snaptradepro.com and clicking on 'Client Login' at the top of the page.
+
+%p ** All invitations are exclusive to an email address. They will not work if shared with anyone else.
+
+%p
+  ** If your new Members don't want to accept the invitation, they may ignore the email.
+  %br
+  Their account won't be created until they access the link above and set their password.

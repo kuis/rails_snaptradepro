@@ -1,0 +1,8 @@
+.modal#comment-creation-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: "modal" }} &times;
+        %h4.modal-title Add an Opinion
+      .modal-body
+        = render "comment_form", appraisal_comment: @appraisal_comment, appraisal: appraisal, organization: organization

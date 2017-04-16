@@ -1,0 +1,45 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+- if @appraisal.archived?
+  - breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization)]
+- breadcrumbs << [@appraisal.customer.account_name, nil]
+- breadcrumbs << [@appraisal.human_title, organization_appraisal_path(@organization, @appraisal)]
+- breadcrumbs << ["Valuations", valuations_organization_appraisal_path(@organization, @appraisal)]
+- role = current_user.memberships.pluck(:role_id)[0]
+= hidden_field_tag "appraisal_id", @appraisal.id, id: "appraisal-id"
+= hidden_field_tag "organization_id", @organization.id, id: "organization-id"
+- content_for(:ribbon_right) do
+  = link_to "Appraisal", organization_appraisal_path(@organization, @appraisal), class: "btn btn-primary"
+  = link_to "Valuation", valuations_organization_appraisal_path(@organization, @appraisal), class: "btn btn-default"
+
+%h1.page-title.txt-color-blueDark
+  Appraisal History - #{@appraisal.human_title}
+
+%table.table.table-hover
+  %thead
+    %tr
+      %th Date Changed
+      %th Who Changed
+      %th Requested Value
+      %th Approved Value
+      %th Estimated Reconditioning
+      %th Proposed Retail
+      %th Approved Reconditioning
+      %th Approved Retail
+      %th Expected Acquisition Date
+      %th Approved Good Until Date
+      %th Trade Condition
+  %tbody
+    - @valuation.versions.each do |version|
+      %tr
+        %td= version.created_at.to_date
+        %td= User.find(version.whodunnit).try(:name)
+        = valuation_change_td_tag version, 'requested_value'
+        = valuation_change_td_tag version, 'approved_value'
+        = valuation_change_td_tag version, 'estimated_reconditioning'
+        = valuation_change_td_tag version, 'proposed_retail'
+        = valuation_change_td_tag version, 'approved_reconditioning'
+        = valuation_change_td_tag version, 'approved_retail'
+        = valuation_change_td_tag version, 'expected_acquisition_date'
+        = valuation_change_td_tag version, 'approved_good_until_date'
+        = valuation_change_td_tag version, 'trade_conditions'

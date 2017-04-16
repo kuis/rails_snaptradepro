@@ -1,0 +1,31 @@
+#logo-group
+  %span#logo
+    = link_to root_path do
+      = image_tag "SnapTradePro_logo_wide600px.png", alt: "Snap Trade Pro"
+
+  / %span#activity.activity-dropdown
+  /   %i.fa.fa-user
+  /   %b.badge 21
+
+- if user_signed_in?
+  .pull-right
+    / %form.header-search.pull-right{:action => "search.html"}
+    /   %input#search-fld{"data-autocomplete" => "[\"ActionScript\",\"AppleScript\",\"Asp\",\"BASIC\"]",
+    /                     :name => "param", :placeholder => "Find reports and more", :type => "text"}
+    /   %button{:type => "submit"}
+    /     %i.fa.fa-search
+    /   %a#cancel-search-js{:href => "javascript:void(0);", :title => "Cancel Search"}
+    /     %i.fa.fa-times
+
+    #fullscreen.btn-header.transparent.pull-right
+      %span
+        %a{"data-action" => "launchFullscreen", :href => "javascript:void(0);", :title => "Full Screen"}
+          %i.fa.fa-arrows-alt
+
+    #hide-menu.btn-header.pull-right
+      %span
+        %a{"data-action" => "toggleMenu", :href => "javascript:void(0);", :title => "Collapse Menu"}
+          %i.fa.fa-reorder
+
+    - if user_signed_in?
+      = render "layouts/organization_selector"

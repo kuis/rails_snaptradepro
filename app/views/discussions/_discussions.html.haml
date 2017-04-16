@@ -1,0 +1,11 @@
+.row#discussions-container
+  .col-md-12
+    .well
+      %h2
+        %span
+          Valuation Discussions
+        = link_to "Create a new Discussion", "#discussion-creation-modal", data: { toggle: "modal" }, class: "btn btn-default add-discussion-btn"
+      %table#discussions
+        - @discussions.each do |discussion|
+          = render "discussions/discussion", discussion: discussion
+      #discussion-comments-container

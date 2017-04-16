@@ -1,0 +1,207 @@
+@import "bootstrap";
+@import "pdf";
+
+@media print and (color) {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+body.print {
+  header {
+    .head {
+      padding-top: 30px;
+      background-color: black !important;
+      .hero-shot {
+        width: 325px;
+        min-height: 160px;
+        position: absolute;
+        margin: 5px 0 0 20px;
+        background-color: white !important;
+        border: 10px solid white;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+        overflow: hidden;
+
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        img {
+          visibility: hidden;
+        }
+      }
+      .model {
+        text-align:center;
+        color: white !important;
+        h2 {
+          margin: 10px 0 20px 0;
+        }
+      }
+    }
+    .head-section {
+      padding: 0 15px;
+    }
+    #head-data {
+      width: 100%;
+      td {
+        padding: 7px 0 7px 20px;
+        border: 2px solid white;
+        background-color: #EBEBEB !important;
+        &.name {
+          width: 40%;
+        }
+        &.value {
+          width: 60%;
+        }
+      }
+    }
+  }
+  main {
+    padding: 20px 30px;
+    width: 100%;
+    section {
+      margin: 15px 0;
+    }
+    #form-value {
+      width: 100%;
+      td {
+        width: 16%;
+        height: 31px;
+        padding: 7px 3px;
+        border: 3px solid white;
+        background-color: #EBEBEB !important;
+        text-align: center;
+        font-weight: bold;
+        line-height: 16px;
+        &.highlight {
+          background-color: #ACACAC !important;
+        }
+      }
+      .values td {
+        background-color: #555555 !important;
+        color: white !important;
+        &.black {
+          background-color: black !important;
+        }
+      }
+    }
+    .title_table {
+      width: 100%;
+      td {
+        padding: 7px 10px;
+      }
+      tr {
+        &.title {
+          td {
+            padding: 3px 5px;
+            background-color: black !important;
+            color: white !important;
+            font-weight: bold !important;
+          }
+        }
+        &.odd {
+          background-color: #EBEBEB !important;
+        }
+      }
+    }
+    #disposition {
+      td.bold {
+        width: 35%;
+      }
+    }
+    #organization {
+      width: 100%;
+      border: 2px solid grey;
+      padding-bottom: 20px;
+      .name {
+        width: 60%;
+        text-align: center;
+      }
+      .logo {
+        width: 40%;
+        text-align: center;
+        img {
+          max-height: 60px;
+          max-width: 100%;
+        }
+      }
+    }
+    #customer {
+      td {
+        width: 50%;
+      }
+    }
+    .grey-container {
+      width: 100%;
+      padding: 15px 20px;
+      background-color: #EBEBEB !important;
+      h3 {
+        margin: 0;
+      }
+      .email {
+        background-color: black !important;
+        color: white !important;
+        display: inline-block;
+        padding: 4px 15px;
+        margin-top: 10px;
+        float: right;
+        -webkit-border-radius: 7px;
+        -moz-border-radius: 7px;
+        border-radius: 7px;
+        min-width: 200px;
+      }
+      .signature {
+        font-weight: bold;
+        display: inline-block;
+        width: 80%;
+        text-align: center;
+        float: right;
+        margin-top: 30px;
+        border-top: 1px solid black;
+      }
+    }
+    .categories {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 5px 1px;
+      tr:nth-child(even) { background-color: white !important; }
+      tr:nth-child(odd) { background-color: #EBEBEB !important; }
+      tr.title {
+        th {
+          width: 30%;
+          background-color: black !important;
+          color: white !important;
+        }
+        td {
+          width: 67%;
+          background-color: #464646 !important;
+        }
+        th, td {
+          padding: 3px 5px;
+        }
+      }
+      tr.fields {
+        th, td {
+          padding: 7px 0 7px 20px;
+        }
+      }
+    }
+  }
+  footer {
+    padding: 10px 30px;
+    background-color: black !important;
+    color: white !important;
+  }
+  .bold {
+    font-weight: bold;
+  }
+
+  table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+  }
+
+
+}
+

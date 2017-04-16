@@ -1,0 +1,11 @@
+#logo-group
+  %span#logo
+    = link_to root_path do
+      = image_tag "SnapTradePro_logo_wide600px.png", alt: "Snap Trade Pro"
+
+
+- if user_signed_in?
+  .pull-right
+    .project-context
+      %br
+      = link_to "Create PDF", '#', id: 'print_template', class: 'project-selector'

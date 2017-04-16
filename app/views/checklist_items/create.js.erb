@@ -1,0 +1,13 @@
+$modal = $("#check-list-item-creation-modal");
+
+<% if @check_list_item.persisted? %>
+  $modal.modal("hide");
+
+  $div = $("#check-list-<%= @check_list_item.checklist.id %> .checklist-item-add-btn");
+  $checklist_item = $("<%= j render "check_list_item", check_list_item: @check_list_item %>");
+
+  $div.before($checklist_item);
+<% else %>
+  form = "<%= j render "check_list_item_form", check_list_item: @check_list_item %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

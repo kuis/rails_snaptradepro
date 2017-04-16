@@ -1,0 +1,31 @@
+= pinnable_jarvis_box category.label, category.id, pinned do
+  = hidden_field_tag "category_id", category.id, class: "category-id "
+
+  .category
+    - category.template_fields.photos.weighted.in_groups_of(4) do |field_row|
+      .value-row
+        .image-row.row
+          - field_row.compact.each do |field|
+            - field_entry = @appraisal.field_entry(field.id)
+            .col-sm-3.image-box
+              .image-field
+                - value = @appraisal.field_value(field.id)
+                - image = value.blank? ? "placeholder.png" : value
+                = image_tag filepicker_url(image), class: "#{'previewable' unless value.blank?}", data: { original_src: filepicker_url(image, size: :default) }
+
+              - if field_entry.respond_to?(:versions) && field_entry.versions.present?
+                = link_to field.display_attribute(@organization, :label), history_organization_appraisal_path(organization_id: @organization.id, id: @appraisal.id, field_id: field.id), class: "history-link"
+              - else
+                = field.display_attribute(@organization, :label)
+
+    - category.template_fields.non_photos.weighted.each do |field|
+      - field_entry = @appraisal.field_entry(field.id)
+
+      - if field.showable?(:show,@organization,current_user)
+        .value-row
+          .col-sm-5.field-name
+            - if field_entry.respond_to?(:versions) && field_entry.versions.present?
+              = link_to field.display_attribute(@organization, :label), history_organization_appraisal_path(organization_id: @organization.id, id: @appraisal.id, field_id: field.id), class: "history-link"
+            - else
+              = field.display_attribute(@organization, :label)
+          .col-sm-7.value= @appraisal.field_readable_value(field)

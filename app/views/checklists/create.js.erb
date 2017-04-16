@@ -1,0 +1,13 @@
+$modal = $("#check-list-creation-modal");
+
+<% if @check_list.persisted? %>
+  $modal.modal("hide");
+
+  $div = $("#check-lists");
+  $check_list = $("<%= j render "check_list", check_list: @check_list %>");
+
+  $div.append($check_list);
+<% else %>
+  form = "<%= j render "appraisals/check_list_form", checklist: @check_list %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

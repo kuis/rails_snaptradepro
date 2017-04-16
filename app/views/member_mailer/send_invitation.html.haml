@@ -1,0 +1,8 @@
+%p Welcome #{@member.first_name},
+
+%p #{@membership.invitor.try(:name)} has invited you to Snap Trade Pro where you can start using the application to gather, manage & create online appraisals as well as manage inventory.
+
+%p This invitation can be accepted through the link below where you will create your password. If you are already a User of Snap Trade Pro you will be redirected to #{@membership.organization.name}'s Organization after you accept this invitation.
+%p= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_members_url(:invitation_token => [@membership.invitation_token, @member.raw_invitation_token].join(','))
+
+%p= I18n.t("devise.mailer.invitation_instructions.ignore", :signin_link => new_session_url(:user), :site_link => ENV["EMAIL_HOST"]).html_safe

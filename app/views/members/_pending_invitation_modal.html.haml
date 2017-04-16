@@ -1,0 +1,18 @@
+#invitation_pending.modal.fade{role: "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} ×
+        %h4.modal-title Invitation Pending
+      .modal-body
+        %p The User you are inviting must have an email address ending with:
+        - @organization.email_suffixes.each do |suffix|
+          %p= suffix
+        %p Please use an email address ending in one of these email suffix.
+        %p 
+          If you need to add a new email suffix contact your Snap Trade Pro administrator which is Vince Green 
+          %a(href="mailto:vince@snaptradepro.com") vince@snaptradepro.com
+        %p When the email suffix is approved you will be able to Resend Invitation
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close

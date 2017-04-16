@@ -1,0 +1,50 @@
+- if f.object.errors.full_messages.any?
+  %ul{:class => 'errors'}
+    - f.object.errors.full_messages.each do |error|
+      %li= error
+
+- organization_id= f.object.organization_id
+= f.input :organization_id, as: :hidden
+%br
+%h3 Organization
+%table.index_table.datatable.organization
+  %thead
+    %tr
+      %th
+      %th ID
+      %th Name
+  %tbody
+    - Organization.all.each do |organization|
+      %tr
+        %td
+          = check_box_tag 'organization_ids[]', organization.id, organization.id == organization_id, disabled: !@field_access_control.new_record?
+        %td= organization.id
+        %td= organization.name
+
+
+- if @field_access_control.new_record?
+  :javascript
+    $('form').submit(function(e){
+      checkboxes = $('table.datatable.organization').dataTable().$('input:checked')
+      organization_ids = []
+      checkboxes.each(function(_, e){
+        organization_ids.push($(e).val());
+      })
+      if(organization_ids.length==0){
+        alert('You must select one organization');
+        e.preventDefault();
+        return false;
+      }
+      $('#field_access_control_organization_id').val(organization_ids[0])
+    })
+    $('input:checkbox','table.datatable.organization').click(function(){
+      if($(this).is(':checked')){
+        $('input:checkbox','table.datatable.organization').prop('checked',false);
+        $(this).prop('checked',true);
+      }
+    })
+
+:css
+  form fieldset > ol > li ul.errors {
+    margin: 0;
+  }

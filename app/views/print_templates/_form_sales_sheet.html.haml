@@ -1,0 +1,57 @@
+= simple_form_for @print_template do |f|
+  .row
+    .col-sm-4
+      = f.input :name
+      = f.input :appraisal_template_id, as: :select, collection: AppraisalTemplate.all.collect {|o| [o.label, o.id]}
+      = f.input :description
+      = f.hidden_field :layout_type, value: params[:layout_type]
+      = f.submit nil, class: "btn btn-primary"
+      = link_to "Back", print_templates_path, class: "btn btn-default"
+  #print_layout_content
+    %h3 Page 1
+    .row
+      .col-sm-4
+        %label Retail Price Field
+        - price_fields = @print_template.print_template_blocks.numeric.by_page(0)
+        = select_tag "retail_price_field_id", options_from_collection_for_select(TemplateField.numeric, 'id', 'label', price_fields.first.try(:blockable_id)), class: "form-control"
+    %hr
+
+    - 2.times do |i|
+      %h3 Page #{i+2}
+      .row
+        #left_section.col-sm-8.sortable
+          .text-danger.hide You can't add more than 8 photos blocks in one page
+          - template_blocks = @print_template.print_template_blocks.by_page(i+1).by_section('left_section')
+          - template_blocks = Array.new(4, PrintTemplateBlock.new) if template_blocks.empty?
+
+          - template_blocks.each_with_index do |block, index|
+            .draggable{id: "#{index == 0 ? 'photo_block' : ''}"}
+              %i.fa.fa-times.pull-right
+              = select_tag "blocks[]", options_from_collection_for_select(TemplateField.photos, 'id', 'label', block.blockable_id), class: "form-control template_field"
+              .text-center
+                %i.fa.fa-photo.fa-3x
+
+              = hidden_field_tag "section[]", "left_section"
+              = hidden_field_tag "block_type[]", "photo"
+              = hidden_field_tag "in_page[]", "#{i+1}"
+              = hidden_field_tag "hidden_fields[]", ""
+
+        #right_section.col-sm-4.sortable
+          .text-danger.hide You can't add more than 2 table blocks in one page
+          - template_blocks = @print_template.print_template_blocks.by_page(i+1).by_section('right_section')
+          - template_blocks = Array.new(2, PrintTemplateBlock.new) if template_blocks.empty?
+
+          - template_blocks.each_with_index do |block, index|
+            .draggable{id: "#{index == 0 ? 'table_block' : ''}"}
+              %i.fa.fa-times.pull-right
+              = select_tag "blocks[]", options_from_collection_for_select(AppraisalCategory.without_id, 'id', 'label', block.blockable_id), class: "form-control category"
+              .text-center
+                %i.fa.fa-table.fa-3x
+              .text-right
+                %a.show-property-modal{href: "#"} Set Properties
+
+              = hidden_field_tag "section[]", "right_section"
+              = hidden_field_tag "block_type[]", "table"
+              = hidden_field_tag "in_page[]", "#{i+1}"
+              = hidden_field_tag "hidden_fields[]", block.properties ? block.properties["hidden_fields"] : ""
+= render "properties_modal"

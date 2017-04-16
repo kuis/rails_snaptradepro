@@ -1,0 +1,19 @@
+- value = appraisal.field_value(field.id)
+- image = value.blank? ? "placeholder.png" : value
+- icon_class = value.blank? ? "fa-plus" : "fa-edit"
+- button_text = "<i class='fa #{icon_class}'></i>"
+- entry = appraisal.field_entry(field.id)
+.image-field
+  = image_tag image
+  .action-buttons
+    = f.filepicker_field field.label, required: false,
+                         value: value,
+                         name: custom_field_name(field.id),
+                         button_text: button_text.html_safe,
+                         class: "btn btn-default btn-sm"
+    - if value.present? && entry.present?
+      = link_to remove_entry_organization_appraisal_path(@organization, @appraisal, entry_id: entry.id),  class: "btn btn-danger btn-sm" do
+        %i.fa.fa-trash
+= field.label
+- if f.object.errors[field.to_sym].any?
+  = "(#{f.object.errors[field.to_sym].first})"

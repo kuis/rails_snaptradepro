@@ -1,0 +1,22 @@
+:sass
+  header
+    #company-logo
+      background-color: white
+    background-color: #{org_color('header_color')} !important
+    #company-info
+      background-color: #{org_color('header_color')} !important
+      *
+        color: #{org_color('text_color')} !important
+  .border-bottom
+    border-color: #{org_color('highlight_line_color')} !important
+%body.print
+  %header.preview.clearfix.border-bottom
+    .col-sm-5#company-logo
+      -# %span.wrapper
+      = image_tag @organization.company_logo.url, class: "img-responsive"
+    .col-sm-7#company-info
+      .pull-left
+        %h2.bold= organization.trade_name
+        %h2= organization.full_address
+        %h2
+          %strong #{organization.call_to_action}: #{organization.sale_sheet_phone}

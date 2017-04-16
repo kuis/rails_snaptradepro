@@ -1,0 +1,8 @@
+.modal#check-list-creation-modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{data: { dismiss: "modal" }} &times;
+        %h4.modal-title Create a Check List
+      .modal-body
+        = render "checklists/check_list_form"

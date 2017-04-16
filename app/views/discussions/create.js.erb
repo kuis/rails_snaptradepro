@@ -1,0 +1,15 @@
+$modal = $("#discussion-creation-modal");
+
+<% if @discussion.persisted? %>
+  $modal.modal("hide");
+
+  $div = $("#discussions");
+  $discussion = $("<%= j render "discussions/discussion", discussion: @discussion %>")
+  $("#discussion_name").val("")
+  $("#discussion_comments_attributes_0_comment").val("")
+
+  $div.append($discussion);
+<% else %>
+  form = "<%= j render "discussions/discussion_form", discussion: @discussion, appraisal: @appraisal, organization: @organization %>";
+  $modal.find(".modal-body").html(form);
+<% end %>

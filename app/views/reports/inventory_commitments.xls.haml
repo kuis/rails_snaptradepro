@@ -1,0 +1,56 @@
+= '<?xml version="1.0"?>'.html_safe
+%Workbook{:xmlns => "urn:schemas-microsoft-com:office:spreadsheet", "xmlns:html" => "http://www.w3.org/TR/REC-html40", "xmlns:o" => "urn:schemas-microsoft-com:office:office", "xmlns:ss" => "urn:schemas-microsoft-com:office:spreadsheet", "xmlns:x" => "urn:schemas-microsoft-com:office:excel"}
+  %Worksheet{"ss:Name" => "Sheet1"}
+    %Table
+      %Row
+        %Cell
+          %Data{"ss:Type" => "String"} TA-Number
+        %Cell
+          %Data{"ss:Type" => "String"} Stock Number
+        %Cell
+          %Data{"ss:Type" => "String"} Booked Value
+        %Cell
+          %Data{"ss:Type" => "String"} Recon Costs
+        %Cell
+          %Data{"ss:Type" => "String"} Retail Price
+        %Cell
+          %Data{"ss:Type" => "String"} Year
+        %Cell
+          %Data{"ss:Type" => "String"} Make
+        %Cell
+          %Data{"ss:Type" => "String"} Model
+        %Cell
+          %Data{"ss:Type" => "String"} Color
+        %Cell
+          %Data{"ss:Type" => "String"} VIN
+        %Cell
+          %Data{"ss:Type" => "String"} Location
+        %Cell
+          %Data{"ss:Type" => "String"} Customer
+      - @appraisals.each do |appraisal|
+        %Row
+          %Cell
+            %Data{"ss:Type" => "String"}= appraisal.number
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'stock_number')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'value_booked')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'recon_costs')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'retail_price')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'year')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'make')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'model')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'paint_color')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'serial_no')
+          %Cell
+            %Data{"ss:Type" => "String"}= get_appraisal_value_by_name(appraisal, 'location')
+          %Cell
+            %Data{"ss:Type" => "String"}= appraisal.customer.account_name
+          

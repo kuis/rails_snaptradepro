@@ -1,0 +1,11 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Customers", organization_appraisals_path(@organization)]
+- breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization)]
+
+= form_tag bulk_archive_organization_customers_path(@organization), method: :put do |f|
+  %h2
+    #{@organization.name} - Archived Customers
+    = hidden_field_tag :unarchive, value: true
+    %button.btn.btn-primary.pull-right Un-Archive
+
+  = render 'customers/table', customers: @customers

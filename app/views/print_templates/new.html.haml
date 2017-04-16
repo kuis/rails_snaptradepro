@@ -1,0 +1,5 @@
+- breadcrumbs << ["Printing Layout", print_templates_path]
+- breadcrumbs << ["New"]
+
+- params[:layout_type] ||= @print_template.layout_type
+= render "form_#{params[:layout_type]}"

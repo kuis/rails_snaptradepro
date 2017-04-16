@@ -1,0 +1,18 @@
+%p Hello #{@member.first_name},
+%p You have been invited by #{@invitor.name} of #{@membership.organization.name} into Snap Trade Pro about 30 days ago. Currently the invitation has not been accepted.
+
+%p This invitation is now deactivated and will no longer work.
+
+%p Please contact #{@invitor.name} and request that they resend the invitation. When you receive the new invitation you will have only 30 days to Accept the new invitation.
+
+%p Feel free to contact us at the email addresses listed below regarding anything Snap Trade Pro.
+
+%p 
+  Snap Trade Pro Support 
+  = link_to 'support@inbounddealer.com', "mail_to('support@inbounddealer.com')"
+%p
+  Access the Snap Trade Pro web application by logging into 
+  = link_to new_session_url(:user), new_session_url(:user)
+  &nbsp;or by going to snaptradepro.com and clicking on 'Client Login' at the top of the page.
+
+%p ** All invitations are exclusive to an email address. They will not work if shared with anyone else.

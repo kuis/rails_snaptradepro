@@ -1,0 +1,7 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+- breadcrumbs << "New Appraisal"
+
+%h2 New #{@appraisal.appraisal_template.label} Appraisal
+
+= render 'form'

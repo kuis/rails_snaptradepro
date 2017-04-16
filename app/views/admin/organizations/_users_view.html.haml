@@ -1,0 +1,20 @@
+%br
+%h3 Users
+%table.index_table.datatable
+  %thead
+    %tr
+      %th{:style => "display:none"}
+      %th ID
+      %th First Name
+      %th Last Name
+      %th Email
+      %th Role
+  %tbody
+    - organization.users.each do |user|
+      %tr
+        %td{:style => "display:none"}
+        %td= user.id
+        %td= user.first_name
+        %td= user.last_name
+        %td= user.email
+        %td= Membership.get_role(organization, user).try(:profile_name)

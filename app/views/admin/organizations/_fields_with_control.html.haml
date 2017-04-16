@@ -1,0 +1,51 @@
+- existing_roles_view = f.object.field_access_controls.try(:pluck,:template_field_id, :view_permission)
+- existing_roles_edit = f.object.field_access_controls.try(:pluck,:template_field_id, :edit_permission)
+- existing_roles_view = Hash[existing_roles_view.map{|u|[u[0], u[1]]}]
+- existing_roles_edit = Hash[existing_roles_edit.map{|u|[u[0], u[1]]}]
+- roles = Role.staff
+
+%br
+%h3 Template Fields
+%table.index_table.datatable#template_fields
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Label
+      %th View
+      %th Edit
+  %tbody
+    - f.object.fac_template_fields.each do |template_field|
+      %tr
+        %td= template_field.id
+        %td= template_field.name
+        %td= template_field.label
+        %td
+          = select_tag "tmp_view_permission[#{template_field.id}]", options_for_select(roles.collect {|r| ["#{r.name} - #{r.profile}", r.id]}, existing_roles_view[template_field.id].try(:split, ",") || []), multiple: true, class: 'view_role'
+        %td
+          = select_tag "tmp_edit_permission[#{template_field.id}]", options_for_select(roles.collect {|r| ["#{r.name} - #{r.profile}", r.id]}, existing_roles_edit[template_field.id].try(:split, ",") || []), multiple: true, class: 'edit_role'
+
+:javascript
+  $('form').submit(function(){
+    var options = []
+    var form = $(this);
+    var view_role_select_boxes = $('table#template_fields').dataTable().$("select.view_role");
+    var edit_role_select_boxes = $('table#template_fields').dataTable().$("select.edit_role");
+    view_role_select_boxes.each(function(){
+      options = $(this).val() || []
+      var sel = $('<select style="display: none" multiple name="'+$(this).attr('name').replace("tmp_","")+'">');
+      jQuery.each( options, function( i, val ) {
+        sel.append($("<option selected='selected'>").attr('value',val).text(val));
+      });
+      form.append(sel);
+    });
+
+    edit_role_select_boxes.each(function(){
+      options = $(this).val() || []
+      var sel = $('<select style="display: none" multiple name="'+$(this).attr('name').replace("tmp_","")+'">');
+      jQuery.each( options, function( i, val ) {
+        sel.append($("<option selected='selected'>").attr('value',val).text(val));
+      });
+      form.append(sel);
+    });
+  });

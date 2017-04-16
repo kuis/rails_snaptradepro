@@ -1,0 +1,9 @@
+= simple_form_for appraisal_comment, remote: true,
+                  url: comment_organization_appraisal_path(organization, appraisal, format: :js) do |f|
+  %p= f.select :state_of_sale, [["As Is", "As Is"], ["Ready for Sale", "Ready for Sale"], ["Retail", "Retail"]], include_blank: "Unit Condition"
+  %p= f.input :price, label: "Valuation Price", input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } }, id: 'special-price'
+  %p= f.input :comment
+
+  .center-text
+    = f.submit nil, class: "btn btn-primary",
+             data: { disable_with: "Submitting ..." }

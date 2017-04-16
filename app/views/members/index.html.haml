@@ -1,0 +1,56 @@
+- breadcrumbs << [@organization.name, organization_path(@organization)]
+- breadcrumbs << ["Members"]
+%h3 Members
+%p
+  Org Admin: #{@organization.admin.try(:name)} - 
+  %em= @organization.admin.try(:email)
+%p
+  Org Owner: #{@organization.owner.try(:name)} - 
+  %em= @organization.owner.try(:email)
+
+= simple_form_for [@organization] do |f|
+  #members-list
+    .alert.alert-info.hide 
+      You made some changes in the member list. To save the changes, click this 
+      = f.submit "Update Members", class: 'btn btn-primary'
+    %table.table.table-hover
+      %thead
+        %tr
+          %th Name
+          %th Email
+          %th Role
+          %th Active
+          - if is_manager?
+            %th 
+            %th Invitation Status
+          %th Invitation Accepted Date
+          - if is_manager?
+            %th 
+              %a.btn.btn-danger{ data: {toggle: "modal", target: "#invite-member"} } Invite New Member
+      %tbody
+        = f.fields_for :users, @members do |m|
+          - membership = @organization.memberships.find_by(user: m.object)
+          %tr
+            %td= link_to m.object.name, organization_member_path(@organization, m.object)
+            %td #{m.object.email}
+
+            - if is_manager?
+              = m.fields_for :memberships, membership do |ms|
+                %td
+                  = ms.select :role_id, options_from_collection_for_select(Role.reps, :id, :profile, ms.object.role_id), {}, class: 'form-control input-sm'
+                %td= ms.check_box :active, {value: membership.active?}, 't', 'f'
+            - else
+              %td #{membership.role.try(:profile)}
+              %td= membership.active? ? 'Yes' : 'No'
+
+            - if is_manager?
+              %td= link_to 'Reset Password', reset_password_organization_member_path(@organization, m.object), remote: true, class: 'btn btn-info reset-password'
+              %td.invitation-status= membership_invitation_status(membership)
+
+            %td= membership.invitation_accepted_at.try(:to_date)
+
+            - if is_manager?
+              %td= link_to 'Resend Invitation', resend_invitation_organization_member_path(@organization, m.object), remote: true, class: 'btn btn-info resend-invitation'
+
+= render "invite_member"
+= render "pending_invitation_modal"

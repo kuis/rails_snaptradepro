@@ -1,0 +1,135 @@
+- breadcrumbs << [@organization.name, organization_appraisals_path(@organization)]
+- breadcrumbs << ["Appraisals", organization_appraisals_path(@organization)]
+- if @appraisal.archived?
+  - breadcrumbs << ["Archived", archived_organization_appraisals_path(@organization)]
+- breadcrumbs << [@appraisal.customer.account_name, nil]
+- breadcrumbs << [@appraisal.human_title, organization_appraisal_path(@organization, @appraisal)]
+- breadcrumbs << "Valuations"
+
+- role = current_user.memberships.pluck(:role_id)[0]
+= hidden_field_tag "appraisal_id", @appraisal.id, id: "appraisal-id"
+= hidden_field_tag "organization_id", @organization.id, id: "organization-id"
+
+- content_for(:ribbon_right) do
+  = link_to "Appraisal", organization_appraisal_path(@organization, @appraisal), class: "btn btn-default btn-primary"
+
+%h1.page-title.txt-color-blueDark
+  Appraisal #{@appraisal.human_title}
+.row
+  .col-lg-12
+    #navigator.section-wrapper
+      %ul#nav.valuations
+        %li
+          %a{:href => "#opinions"} Opinions
+        - if false #hidden for the time being
+          %li
+            %a{:href => "#discuss"} Discussions
+          %li
+            %a{:href => "#urls"} URLs
+        %li
+          %a{:href => "#checklists"} Checklists
+-#.center-text.actions-top
+.appraisal-show
+.row(style="margin-bottom: 10px")
+  .col-md-12
+    .well
+      = simple_form_for @valuation_fields, url: valuation_organization_appraisal_path(@appraisal.organization, @appraisal, format: :js), method: :put do |f|
+        .row
+          .col-md-4
+            %h4 Requests
+            .row
+              .col-md-12
+                - unless @organization.is_field_hidden('requested_value', role, 'view')
+                  = f.input :requested_value, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } }
+              .col-md-12
+                - unless @organization.is_field_hidden('estimated_reconditioning', role, 'view')
+                  = f.input :estimated_reconditioning, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } },disabled: @organization.is_field_disabled('estimated_reconditioning', role)
+              .col-md-12
+                - unless @organization.is_field_hidden('prop_retail', role, 'view')
+                  = f.input :proposed_retail, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } },disabled: @organization.is_field_disabled('prop_retail', role)
+              .col-md-12
+                - unless @organization.is_field_hidden('expected_acquisition_date', role, 'view')
+                  = f.input :expected_acquisition_date, placeholder: "MM/DD/YY", input_html: { class: "bootstrap-datepicker"},disabled: @organization.is_field_disabled('expected_acquisition_date', role)
+              .col-md-12
+                = f.submit "Save", class: "btn btn-default btn-primary"
+                = link_to 'History', valuation_history_organization_appraisal_path(@organization, @appraisal), class: 'btn btn-default'
+          .col-md-7.col-lg-offset-1
+            .row
+              .col-lg-12
+                %h4 Approvals
+                .row
+                  .col-md-6
+                    .row
+                      .col-md-12
+                        - unless @organization.is_field_hidden('value_approved', role, 'view')
+                          = f.input :approved_value, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } },disabled: @organization.is_field_disabled('value_approved', role)
+                      .col-md-12
+                        - unless @organization.is_field_hidden('approved_reconditioning', role, 'view')
+                          = f.input :approved_reconditioning, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } },disabled: @organization.is_field_disabled('approved_reconditioning', role)
+                      .col-md-12
+                        - unless @organization.is_field_hidden('approved_retail', role, 'view')
+                          = f.input :approved_retail, input_html: { class: "numeric-field", data: { comma_separated: "true", currency_symbol: "$", digits_after_decimal: "0" } },disabled: @organization.is_field_disabled('approved_retail', role)
+                      .col-md-12
+                        - unless @organization.is_field_hidden('approved_good_until', role, 'view')
+                          = f.input :approved_good_until_date, placeholder: "MM/DD/YY", input_html: { class: "bootstrap-datepicker"},disabled: @organization.is_field_disabled('approved_good_until', role)
+                  .col-md-6
+                    .row
+                      .col-md-12
+                        - unless @organization.is_field_hidden('trade_conditions', role, 'view')
+                          = f.input :trade_conditions ,label: 'Trade Conditions', :as => :text, input_html: { rows: 7, maxlength: 300 }, disabled: @organization.is_field_disabled('trade_conditions', role)
+.row
+
+  .col-md-8.col-sm-8
+    .row
+      .col-md-12(style="margin-bottom: 10px;")
+        .well
+          .row
+            #opinions.section-wrapper
+              = render "comment_category"
+    - if false #hidden for the time being
+      .row
+        .col-xs-12
+          #discuss.section-wrapper
+            = render "discussions/discussions"
+
+    - if false #hidden for the time being
+      .well
+        .row
+          .col-xs-12
+            #urls.section-wrapper
+              = render "valuation_urls/urls"
+
+  .col-md-4.col-sm-4
+    .well
+      .row#checklist-container
+        .col-xs-12
+          #checklists.section-wrapper
+            %h2
+              %span.checklist-header
+                Checklists
+              = link_to "Create Checklist", "#check-list-creation-modal", data: { toggle: "modal" }, class: "btn btn-default add-checklist-btn"
+            #check-lists
+              - @check_lists.each do |check_list|
+                = render "checklists/check_list", check_list: check_list
+
+.row
+  .col-xs-12
+    - @categories.in_groups_of(2).each do |category_row|
+      .row
+        - category_row.compact.each do |category|
+          .col-xs-6
+            = render 'show_category', category: category
+
+.row
+  .col-xs-12
+    - @pinned_categories.each do |category|
+      .col-xs-6
+        = render 'show_category', category: category, pinned: true
+
+%ul#to-top
+  %li
+    %a.btn.btn-default{:href => "#navigator"} Page Top <i class="fa fa-angle-up"></i>
+= render 'add_comment_modal', organization: @organization, appraisal: @appraisal
+= render 'checklists/check_list_creation_modal'
+= render 'discussions/add_discussion_modal', appraisal: @appraisal, organization: @organization
+= render 'valuation_urls/add_valuations_url_modal', appraisal: @appraisal, organization: @organization

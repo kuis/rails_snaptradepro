@@ -1,0 +1,16 @@
+%br
+%h3 Equipment Types
+%table.index_table.datatable
+  %thead
+    %tr
+      %th{:style => "display:none"}
+      %th ID
+      %th Name
+      %th Label
+  %tbody
+    - organization.equipment_types.each do |equipment_type|
+      %tr
+        %td{:style => "display:none"}
+        %td= equipment_type.id
+        %td= equipment_type.name
+        %td= equipment_type.label

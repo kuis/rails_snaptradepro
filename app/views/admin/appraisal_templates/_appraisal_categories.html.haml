@@ -1,0 +1,30 @@
+- category_ids = f.object.appraisal_categories.map(&:id)
+= f.input :appraisal_category_ids, as: :hidden, value: ''
+
+%br
+%h3 Appraisal Categories
+%table.index_table.datatable
+  %thead
+    %tr
+      %th
+      %th Name
+      %th Label
+      %th Weight
+  %tbody
+    - AppraisalCategory.all.each do |category|
+      %tr
+        %td
+          = check_box_tag 'category_ids[]', category.id, category_ids.include?(category.id)
+        %td= category.name
+        %td= category.label
+        %td= category.weight
+
+:javascript
+  $('form').submit(function(){
+    checkboxes = $('table.datatable').dataTable().$('input:checked')
+    category_ids = []
+    checkboxes.each(function(_, e){
+      category_ids.push($(e).val());
+    })
+    $('#appraisal_template_appraisal_category_ids').val(category_ids)
+  })

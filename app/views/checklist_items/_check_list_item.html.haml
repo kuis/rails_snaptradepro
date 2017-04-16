@@ -1,0 +1,11 @@
+.checklist-item-container
+  .checklist-item-hover
+    = link_to checklist_checklist_item_path(check_list_item.checklist.id, check_list_item.id), remote: true, method: :delete do
+      = fa_icon "trash"
+    = link_to "Edit", edit_checklist_checklist_item_path(check_list_item.checklist.id, check_list_item.id), remote: true
+
+
+  %li.checklist-item(id="checklist-item-#{check_list_item.id}")
+    = check_box_tag "checklist", 1, check_list_item.completed?, data: { behavior: "#{check_list_item.completed? ? "check-list-item-uncompleted" : "check-list-item-completed"}", "check-list-id" => check_list_item.checklist.id, "check-list-item-id" => check_list_item.id }
+    = check_list_item.description
+
